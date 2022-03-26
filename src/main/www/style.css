@@ -1,0 +1,65 @@
+@font-face {
+    font-family: "Thin";
+    src: url("Brown-Thin.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Regular";
+    src: url("Brown-Regular.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Bold";
+    src: url("Brown-Bold.ttf") format('truetype');
+}
+
+body{
+	margin: 0;
+	padding: 10px;
+	padding-top: 0;
+	padding-bottom: 0;
+	background-color: lightgrey;
+}
+
+header{
+	margin: 0;
+	padding: 1vh;
+	height: 15vh;
+	background-color: white;
+	text-align:center;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.title_home{
+	margin: 0;
+	padding: 0;
+	font-family: Bold;
+	font-size: 1.5vh;
+}
+
+.logo_home{
+	height: 60%;
+
+}
+
+.nav_home{
+	background-color: yellow;
+}
+
+section{
+	background-color: white;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin: 0;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+.footer_home{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	font-family: Regular;
+	font-size: 1.5vh;
+}
