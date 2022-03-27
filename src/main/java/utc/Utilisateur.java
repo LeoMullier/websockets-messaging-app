@@ -1,8 +1,8 @@
-// Déclaration du package
+// DÃ©claration du package
 package utc;
 
 
-// Importation des bibliothèques
+// Importation des bibliothÃ¨ques
 
 
 // Classe Utilisateur
@@ -17,7 +17,7 @@ public class Utilisateur {
 	public boolean is_active;
 	
 	
-	// Création d'un nouvel utilisateur
+	// CrÃ©ation d'un nouvel utilisateur
 	public Utilisateur(int new_id, String new_login, String new_passwd, boolean new_is_admin, boolean new_is_active) {
 		
 		
@@ -32,12 +32,12 @@ public class Utilisateur {
 	}
 	
 	
-	// Désactivation d'un utilisateur particulier
+	// DÃ©sactivation d'un utilisateur particulier
 	public void Desactiver_utilisateur() {
 		
 		
 		this.is_active = false;	
-		System.out.println("(!) Confirmation de la désactivation de l'utilisateur.");
+		System.out.println("(!) Confirmation de la dÃ©sactivation de l'utilisateur.");
 	}
 	
 	
@@ -49,20 +49,20 @@ public class Utilisateur {
 	}
 	
 	
-	// Mise à jour du login d'un utilisateur particulier
+	// Mise Ã  jour du login d'un utilisateur particulier
 	public void Set_login(String new_login) {
 		
 		
 		this.login = new_login;	
-		System.out.println("(!) Confirmation de la mise à jour du login de l'utilisateur.");
+		System.out.println("(!) Confirmation de la mise Ã  jour du login de l'utilisateur.");
 	}
 	
 	
-	// Mise à jour du mot de passe d'un utilisateur particulier
+	// Mise Ã  jour du mot de passe d'un utilisateur particulier
 	public void Set_passwd(String new_passwd) {
 		
 		
 		this.passwd = new_passwd;	
-		System.out.println("(!) Confirmation de la mise à jour du mot de passe de l'utilisateur.");
+		System.out.println("(!) Confirmation de la mise Ã  jour du mot de passe de l'utilisateur.");
 	}
 }

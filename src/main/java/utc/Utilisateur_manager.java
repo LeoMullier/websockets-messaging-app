@@ -1,8 +1,8 @@
-// Déclaration du package
+// DÃ©claration du package
 package utc;
 
 
-// Importation des bibliothèques
+// Importation des bibliothÃ¨ques
 import java.io.*;
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class Utilisateur_manager {
 	}
 	
 	
-	// Désactivation d'un utilisateur dans le tableau
+	// DÃ©sactivation d'un utilisateur dans le tableau
 	public void UM_Desactiver_utilisateur(int id) {
 		
 		
@@ -38,14 +38,14 @@ public class Utilisateur_manager {
 			
 			
             tab_utilisateurs.get(id).Desactiver_utilisateur();
-    		System.out.println("(!) Confirmation de la désactivation d'un utilisateur dans le tableau.");
+    		System.out.println("(!) Confirmation de la dÃ©sactivation d'un utilisateur dans le tableau.");
         }
 		
 		
 		else {
 			
 			
-			System.out.println("(!) L'utilisateur dont l'identifiant est spécifié est introuvable.");
+			System.out.println("(!) L'utilisateur dont l'identifiant est spÃ©cifiÃ© est introuvable.");
 		}
 	}
 	
@@ -67,12 +67,12 @@ public class Utilisateur_manager {
 		else {
 			
 			
-			System.out.println("(!) L'utilisateur dont l'identifiant est spécifié est introuvable.");
+			System.out.println("(!) L'utilisateur dont l'identifiant est spÃ©cifiÃ© est introuvable.");
 		}
 	}
 	
 	
-	// Mise à jour du login d'un utilisateur dans le tableau
+	// Mise Ã  jour du login d'un utilisateur dans le tableau
 	public void UM_Set_login(int id, String new_login) {
 		
 		
@@ -80,19 +80,19 @@ public class Utilisateur_manager {
 			
 			
             tab_utilisateurs.get(id).Set_login(new_login);
-    		System.out.println("(!) Confirmation de la mise à jour du login d'un utilisateur dans le tableau.");
+    		System.out.println("(!) Confirmation de la mise Ã  jour du login d'un utilisateur dans le tableau.");
         }
 		
 		
 		else {
 			
 			
-			System.out.println("(!) L'utilisateur dont l'identifiant est spécifié est introuvable.");
+			System.out.println("(!) L'utilisateur dont l'identifiant est spÃ©cifiÃ© est introuvable.");
 		}
 	}
 	
 	
-	// Mise à jour du mot de passe d'un utilisateur dans le tableau
+	// Mise Ã  jour du mot de passe d'un utilisateur dans le tableau
 	public void UM_Set_passwd(int id, String new_passwd) {
 		
 		
@@ -100,14 +100,14 @@ public class Utilisateur_manager {
 			
 			
             tab_utilisateurs.get(id).Set_passwd(new_passwd);
-    		System.out.println("(!) Confirmation de la mise à jour du mot de passe d'un utilisateur dans le tableau.");
+    		System.out.println("(!) Confirmation de la mise Ã  jour du mot de passe d'un utilisateur dans le tableau.");
         }
 		
 		
 		else {
 			
 			
-			System.out.println("(!) L'utilisateur dont l'identifiant est spécifié est introuvable.");
+			System.out.println("(!) L'utilisateur dont l'identifiant est spÃ©cifiÃ© est introuvable.");
 		}
 	}
 }
