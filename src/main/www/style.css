@@ -153,6 +153,31 @@ tfoot{
 td{
 	padding-left: 7px;
 	padding-right: 7px;
+	text-align: center;
+}
+
+.titre_canal{
+	padding-left: 7px;
+	padding-right: 7px;
+	text-align: left;
+}
+
+.modif{
+	background: url("stylo_modif.png") fixed;
+    background-size: 25% ;
+    background-position: center;	
+    background-attachment: local;
+    background-repeat: no-repeat;
+
+}
+
+.suppr{
+	background: url("croix_suppr.png") fixed;
+    background-size: 25%;
+    background-position: center;	
+    background-attachment: local;
+    background-repeat: no-repeat;
+
 }
 
 .odd{
