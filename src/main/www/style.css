@@ -266,6 +266,33 @@ td{
 }
 
 
+.login_field{
+	width: 346px;
+	height: 35px;
+	background: #242526;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	padding-left: 14px;
+	padding-right: 14px;
+	border: 2.5px solid white;
+	border-radius: 20px;
+}
+
+
+.login_submit{
+	width: 373px;
+	border: 0px;
+	height: 35px;
+	background: #242526;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	border: 2.5px solid white;
+	border-radius: 20px;
+}
+
+
 .footer_home{
 	text-align: center;
 	margin: 0;
