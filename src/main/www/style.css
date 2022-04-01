@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "Thin";
-    src: url("Brown-Thin.ttf") format('truetype');
+    font-family: "Light";
+    src: url("Brown-Light.ttf") format('truetype');
 }
 
 @font-face {
@@ -15,51 +15,240 @@
 
 body{
 	margin: 0;
-	padding: 10px;
-	padding-top: 0;
-	padding-bottom: 0;
-	background-color: lightgrey;
+	padding: 0;
+	background-color: lightgreen;
 }
 
 header{
 	margin: 0;
-	padding: 1vh;
-	height: 15vh;
-	background-color: white;
-	text-align:center;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	padding: 7px;
+	padding-left: 14px;
+	height: 42px;
+	background-color: #242526;
+	border-bottom: solid dimgrey 1px;
 }
 
 .title_home{
 	margin: 0;
+	margin-left: 7px;
 	padding: 0;
-	font-family: Bold;
-	font-size: 1.5vh;
+	font-family: Regular;
+	font-size: 14pt;
+	display:inline-block;
+	color: white;
+	vertical-align: middle;
 }
 
 .logo_home{
-	height: 60%;
-
+	height: 100%;
+	display:inline-block;
+	vertical-align: middle;
 }
 
-.nav_home{
-	background-color: yellow;
+main{
+	background-color: #242526;
+	margin: 0;
+	padding: 7px;
+	padding-left: 14px;
+	border-right: solid dimgrey 1px;
+	position: absolute;
+	left: 0;
+	right: 394px;
+	top: 57px;
+	bottom: 0px;
+	color: white;
+}
+
+.h1{
+	color: #9ae69a;
+	font-family: Bold;
+	font-size: 26pt;
+	margin: 0;
+	margin-bottom: 7px;
+	padding: 0;
+	display: inline-block;
+	text-decoration: none;
+}
+
+.h2{
+	color: grey;
+	font-family: Regular;
+	font-size: 26pt;
+	margin: 0;
+	margin-bottom: 7px;
+	margin-left: 14px;
+	padding: 0;
+	display: inline-block;
+	text-decoration: none;
+}
+
+aside{
+	background-color: #242526;
+	margin: 0;
+	width: 394px;
+	position: absolute;
+	right: 0;
+	top: 57px;
+	bottom: 0px;
+	color: white;
 }
 
 section{
-	background-color: white;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	margin: 0;
-	margin-top: 10px;
-	padding: 10px;
+    min-height: 200px;
+    background-color: cornflowerblue;
+    margin: 10px;
 }
+
+footer
+{
+    margin: 10px;
+    text-align: right;
+}
+
+main{
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+.text{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	margin-top: 28px;
+	padding: 0;
+}
+
+.dataTables_length{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	margin-top: 28px;
+	padding: 0;
+}
+
+.dataTables_filter{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 0;
+}
+
+thead{
+	height: 50px;
+	background: grey;
+	font-family: Regular;
+	font-size: 14pt;
+}
+
+tfoot{
+	height: 50px;
+	background: grey;
+	font-family: Regular;
+	font-size: 14pt;
+}
+
+td{
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.odd{
+	height: 75px;
+	background-color: transparent;
+	font-family: Light;
+	font-size: 14pt;
+}
+
+.odd:hover{
+	background: grey;
+} 
+
+.even{
+	height: 75px;
+	background-color: transparent;
+	font-family: Light;
+	font-size: 14pt;
+}
+
+.even:hover{
+	background: grey;
+}
+
+
+.dataTables_info{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 0;
+}
+
+
+.paginate_button
+{
+    padding: 10px;
+    border:1px solid #dddddd;
+	height: 50px;
+	background: grey;
+	font-family: Regular;
+	font-size: 14pt;
+}
+
+
+.user_button{
+	margin-top: 7px;
+	font-family: Regular;
+	font-size: 14pt;
+	color: white;
+	position: absolute;
+	right: 70px;
+	top: 0;
+	height: 42px;
+	text-align: right;
+	line-height: 42px;
+}
+
+
+.logo_user{
+	position: absolute;
+	right: 14px;
+	top: 7px;
+	height: 42px;
+	width: 42px;
+	border-radius: 21px;
+}
+
+
+.user_infos{
+	text-align: center;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 0;
+}
+
+
+.logo_user_aside {
+    height: 150px;
+    width: 150px;
+	margin: 14px;
+    border-radius: 85px;
+    border: 5px solid #9ae69a;
+}
+
 
 .footer_home{
 	text-align: center;
 	margin: 0;
 	padding: 0;
 	font-family: Regular;
-	font-size: 1.5vh;
+	font-size: 10pt;
+	position: absolute;
+	bottom: 7px;
+	width: 100%;
+	color: grey;
 }

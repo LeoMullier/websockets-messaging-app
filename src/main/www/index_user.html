@@ -1,31 +1,120 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>
-			Accueil utilisateur
-		</title>
-		<meta charset=""utf-8" />
-		<link rel="stylesheet" href="style.css" />
-	</head>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+	<link rel="icon" href="logo.png">
+    <title>UTC - Accueil</title>
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="td.js"></script>
 
-	<body>
-		<header>
-			<img class="logo_home" src="logo.png" />
-			<p class="title_home">the Messy Messaging Service</p>
-			<nav class="nav_home">hey</nav>
-		</header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
 
-		
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
 
-		<section>
-			<h1>Tous mes canaux</h1>
-			<article>
-				<h1>Titre 1</h1>
-				<p>Hello world</p>
-			</article>
-		</section>
+    </script>
+
+</head>
+<body>
+	<header>
+		<img class="logo_home" src="logo.png" />
+		<p class="title_home">
+			UTC - Utilitaire Textuel pour la Communication
+		</p>
+	</header>
+	<!-- Nav bar bootstrap 5 : https://getbootstrap.com/docs/5.0/components/navbar/ -->
+	<main>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a href="index.html">
+				<p class="h1">
+					Tous les canaux</p></a>
+			<a href="index_proprio.html">
+				<p class="h2">
+					Mes canaux</p></a>
+			<a href="index_invites.html">
+				<p class="h2">
+					Canaux invités</p></a>
+		</nav>
+
+		<article class="article_main">
+			<p class="text">
+				Bienvenue sur votre espace de messagerie UTC. Nous vous présentons ci-dessous la liste des canaux que vous avez créés et ceux pour lesquels vous êtes invité.
+			</p>
+			<table id="example" class="table table-striped" style="width:100%">
+				<thead>
+					<tr>
+						<th>Identifiant</th>
+						<th>Description</th>
+						<th>Date de création</th>
+					</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td>16</td>
+							<td><strong>Le chat de la meilleure coloc<br />LéoMullier</strong>, BastianCosson, CMartinet, ...</td>
+							<td>28/03/2022</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td><strong>Forum de l'UV SR03<br />LéoMullier</strong>, BastianCosson, CMartinet, ...</td>
+							<td>01/02/2022</td>
+						</tr>
+						<tr>
+							<td>39</td>
+							<td><strong>
+									Discussion pour le départ à l'étranger<br />LéoMullier</strong>, BastianCosson, CMartinet, ...</td>
+							<td>18/04/2021</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td><strong>Réunion pour l'association<br />LéoMullier</strong>, BastianCosson, CMartinet, ...</td>
+							<td>27/11/2019</td>
+						</tr>
+						<tr>
+							<td>14</td>
+							<td><strong>Discussion pour le départ à l'étranger<br />LéoMullier</strong>, BastianCosson, CMartinet, ...</td>
+							<td>25/03/2022</td>
+						</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>Identifiant</th>
+						<th>Description</th>
+						<th>Date de création</th>
+					</tr>
+				</tfoot>
+			</table>
+
+		</article>
+	</main>
+	<div class="user_button">Mon compte</div>
+	<img class="logo_user" src="https://picsum.photos/500" />
+	<aside>
+		<div class="user_infos">
+			<img class="logo_user_aside" src="https://picsum.photos/500" />
+			<br /><span class="h1">
+				Léo Mullier
+			</span>
+			<br />leo.mullier@etu.utc.fr
+			<br />
+			<br />
+			<br /><font color="#33cc33">●</font> en ligne
+			<br /><font color="orange">●</font> administrateur
+		</div>
+
 		<footer class="footer_home">
-			<p>&lt;/&gt; Developped by Bastian Cosson and L�o Mullier - SR03 P22</p>
+			<p>
+				&lt;/&gt; Développé pour SR03 en P2022 par
+				<br />Bastian Cosson, Léo Mullier, Cédric Martinet
+			</p>
 		</footer>
-	</body>
+	</aside>
+
+</body>
 </html>
