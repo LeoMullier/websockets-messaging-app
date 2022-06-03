@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+	<!-- Déclarations du head -->
+	<meta charset="UTF-8">
+	<link rel="icon" href="/img/logo.png">
+	<title>UTC - Bienvenue</title>
+	<link rel="stylesheet" href="/css/style.css" />
+	
+	<!-- Ressources fournies -->
+	<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+	<!-- Bandeau supérieur -->
+	<header>
+		<div class="entete sans_curseur" id="entete">
+			<img class="entete_image sans_curseur" id="entete_image" src="/img/logo.png"/>
+			<p class="entete_titre sans_curseur" id="entete_titre">
+				UTC - Utilitaire Textuel pour la Communication
+			</p>
+		</div>
+		<div class="entete_action">
+			<div class="entete_action_texte" onclick="changer_panneau()">Se connecter</div>
+			<img class="entete_action_image" src="/img/login.png" onclick="changer_panneau()"/>
+		</div>
+	</header>
+	
+	<!-- Corps de la page -->
+	<main id="corps">
+		<!-- Navigation dans les rubriques -->
+		<nav>
+			<p class="titre2 sans_curseur">
+				Tous mes canaux</p>
+			<p class="titre2 sans_curseur">
+				Canaux propriétaires</p>
+			<p class="titre2 sans_curseur">
+				Canaux invités</p>
+		</nav>
+
+		<!-- Contenu principal -->
+		<article>
+			<p class="texte">
+				Bienvenue sur notre Utilitaire Textuel pour la Communication (ou plus communément appelé UTC) ! Celui-ci vous permet d'échanger en ligne des messages sur des canaux multi-utilisateurs sous forme de conversations. 
+				<br />
+				<br />
+				Afin de répondre à vos besoins et de nous adapter à vos préférences, nous vous proposons 2 méthodes de discussion : la discussion instantanée (les messages sont envoyés uniquement aux utilisateurs connectés et sont éphémaires) ou la conversation asynchrone (les messages sont sauvegardés dans le fil de discussion et sont persistants).
+				<br />
+				<br />
+				Pour débuter votre expérience sur notre plateforme, n'attendez plus et authentifiez-vous sur le bandeau juste à droite !
+			</p>
+		</article>
+	</main>
+
+	<!-- Panneau lattéral -->
+	<aside id="panneau">
+		<div class="panneau_corps">
+			<center>
+				<img class="panneau_image" src="https://picsum.photos/500"/>
+				<form action="#" th:action="@{/login}" th:object="${user}" method="post">
+					<label>Email :</label>
+					<br />
+					<input type="text" class="login_champ" placeholder="Tapez ici..." th:field="*{login}" required>
+					<br />
+					<br />
+					<label>Mot de passe :</label>
+					<br />
+					<input type="password" class="login_champ" placeholder="Tapez ici..." th:field="*{mdp}" required>
+					<br />
+					<br />
+					<input type="checkbox" class="login_check" checked="checked"> Se souvenir de moi
+					<br />
+					<input class="login_valider" type="submit" value="Se connecter">
+					<!--<p th:if="${ erreurLogin == 1 }" th:text="bla"></p>
+					<p th:text="${ erreurLogin }"></p>-->
+				</form>   
+			</center>
+		</div>
+		
+		<footer class="panneau_pied">
+			<p>
+				&lt;/&gt; Développé pour SR03 en P2022 par
+				<br />Bastian Cosson, Léo Mullier, Cédric Martinet
+			</p>
+		</footer>
+	</aside>
+
+	<!-- Appel du fichier externe JavaScript -->
+	<script type="text/javascript" src="/js/script.js"></script>
+</body>
+</html>
