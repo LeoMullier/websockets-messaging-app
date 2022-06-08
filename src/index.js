@@ -1,17 +1,76 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// ==================================================================================================== //
+// Projet : Utilitaire Textuel de Communication                                                         //
+// Auteurs : Bastian COSSON, Léo MULLIER, Cédric Martinet                                               //
+//                                                                                                      //
+// Nom du fichier : index.js                                                                            //
+// Description : Script JS central pour afficher les bons composants en fonction des URL                //
+// Date de dernière mise à jour : 06/06/2022                                                            //
+// ==================================================================================================== //
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+// Importation des ressources
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+
+// Importations des composants de barres supérieures
+import {
+	BarreSupLogin,
+} from "./components";
+
+
+// Importation des composants de contenus
+import {
+	ContenuLogin,
+	Bienvenue,
+	Navigation,
+	Footer,
+	Home,
+	About,
+	Contact,
+	Blog,
+	Posts,
+	Post,
+} from "./components";
+
+
+// Importations des composants de bandeaux latéraux
+import {
+	BandeauLatLogin,
+} from "./components";
+
+
+// Methode render pour afficher les composants
+ReactDOM.render(
+	<Router>
+		{/* Affichage de la barre supérieure */}
+		<Routes>
+			<Route path="/bienvenue" element={<BarreSupLogin />} />
+		</Routes>
+
+		{/* Affichage du contenu de la page */}
+		<Routes>
+			<Route path="/" element={<Home />} />
+			{/* <Redriect from='/' to="/bienvenue" /> */}
+			<Route path="/bienvenue" element={<ContenuLogin />} />
+
+			<Route path="/about" element={<About />} />
+			<Route path="/contact" element={<Contact />} />
+			<Route path="/blog" element={<Blog />}/>
+			<Route path="" element={<Posts />} />
+			<Route path=":postSlug" element={<Post />} />
+		</Routes>
+
+		{/* Affichage de la bandeaux latéraux */}
+		<Routes>
+			<Route path="/bienvenue" element={<BandeauLatLogin />}/>
+		</Routes>
+	</Router>,
+
+	// Composants à insérer dans le div root de index.html
+	document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+serviceWorker.unregister();

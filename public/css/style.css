@@ -1,0 +1,613 @@
+/*========== IMPORTANTION DES FONT ==========*/
+@font-face {
+    font-family: "Light";
+    src: url("/font/Brown-Light.ttf") format('truetype');
+}
+
+
+@font-face {
+    font-family: "Regular";
+    src: url("/font/Brown-Regular.ttf") format('truetype');
+}
+
+
+@font-face {
+    font-family: "Bold";
+    src: url("/font/Brown-Bold.ttf") format('truetype');
+}
+
+
+/*========== BARRE DE DEFILEMENT ==========*/
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	border: 0px;  
+
+}
+   
+
+::-webkit-scrollbar-thumb {
+	background: dimgrey; 
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+	background: #9ae69a; 
+}
+
+
+/*========== ENSEMBLE DE LA PAGE ==========*/
+body{
+	margin: 0;
+	padding: 0;
+	background-color: #242526;
+}
+
+
+/*========== EN-TETE ==========*/
+header{
+	margin: 0;
+	padding: 7px;
+	padding-left: 14px;
+	height: 42px;
+	background-color: #242526;
+	border-bottom: solid dimgrey 1px;
+}
+
+
+/* Partie gauche */
+.entete{
+	position: absolute;
+	left: 14px;
+	top: 7px;
+	height: 42px;
+	padding: 0px;
+	cursor: pointer;
+}
+
+
+.entete_image{
+	height: 42px;
+	width: 42px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+.entete_titre{
+	font-family: Regular;
+	font-size: 14pt;
+	color: white;
+	height: 100%;
+	text-align: left;
+	line-height: 40px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 7px;
+	margin: 0px;
+}
+
+/* Partie droite */
+.entete_action{
+	position: absolute;
+	right: 14px;
+	top: 7px;
+	height: 42px;
+	padding: 0px;
+	cursor: pointer;
+}
+
+
+.entete_action_texte{
+	font-family: Regular;
+	font-size: 14pt;
+	color: white;
+	height: 100%;
+	text-align: right;
+	line-height: 40px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 7px;
+}
+
+
+.entete_action_image{
+	height: 42px;
+	width: 42px;
+	border-radius: 21px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+/* Suppression du curseur pointeur */
+.sans_curseur{
+	cursor: default;
+}
+
+
+/*========== CORPS ==========*/
+main{
+	background-color: #242526;
+	margin: 0;
+	padding: 14px;
+	border-right: solid dimgrey 1px;
+	position: absolute;
+	left: 0;
+	right: 394px;
+	top: 57px;
+	bottom: 0px;
+	color: white;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+
+.titre1{
+	color: #9ae69a;
+	font-family: Bold;
+	font-size: 26pt;
+	margin: 0;
+	margin-bottom: 7px;
+	margin-right: 14px;
+	padding: 0;
+	display: inline-block;
+	text-decoration: none;
+}
+
+
+.titre2{
+	color: grey;
+	font-family: Regular;
+	font-size: 26pt;
+	margin: 0;
+	margin-bottom: 7px;
+	margin-right: 14px;
+	padding: 0;
+	display: inline-block;
+	text-decoration: none;
+}
+
+
+.texte{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	margin-top: 28px;
+	padding: 0;
+}
+
+
+/* Tableau de listage des canaux */
+.dataTables_length{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	margin-top: 28px;
+	padding: 0;
+	display: inline-block;
+	margin-left: 0px;
+	margin-right: auto;
+}
+
+
+.dataTables_filter{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 0;
+	position:relative;
+	float:right;
+	margin-left: auto;
+	margin-right: 0px;
+	right:0;
+	margin-top:28px;
+}
+
+
+th{
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+
+thead{
+	height: 50px;
+	/*background: grey;*/
+	font-family: Regular;
+	font-size: 14pt;
+	font-style: normal;
+}
+
+
+.sorting{
+	border-bottom: solid 1px dimgrey;
+	
+}
+
+
+tfoot{
+	height: 50px;
+	background: grey;
+	font-family: Regular;
+	font-size: 14pt;
+}
+
+
+td{
+	padding-left: 7px;
+	padding-right: 7px;
+	text-align: center;
+}
+
+
+.cellule_description{
+	padding-left: 14px;
+	padding-right: 14px;
+	text-align: left;
+}
+
+
+.modif{
+	background: url("stylo_modif.png") fixed;
+    background-size: 25% ;
+    background-position: center;	
+    background-attachment: local;
+    background-repeat: no-repeat;
+}
+
+
+.suppr{
+	background: url("croix_suppr.png") fixed;
+    background-size: 25%;
+    background-position: center;	
+    background-attachment: local;
+    background-repeat: no-repeat;
+}
+
+
+.tab_ligne{
+	height: 75px;
+	background-color: transparent;
+	font-family: Light;
+	font-size: 14pt;
+	cursor: pointer;
+}
+
+
+.tab_ligne:hover{
+	background: #484a4c;
+} 
+
+
+.even{
+	height: 75px;
+	background-color: transparent;
+	font-family: Light;
+	font-size: 14pt;
+	cursor: pointer;
+}
+
+
+.even:hover{
+	background: #484a4c;
+}
+
+
+.dataTables_info{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 0;
+}
+
+
+.paginate_button
+{
+    padding: 10px;
+    border:1px solid #dddddd;
+	height: 50px;
+	background: grey;
+	font-family: Regular;
+	font-size: 14pt;
+}
+
+
+.dataTables_paginate
+{
+	margin-bottom: 10px;
+}
+
+
+/* Boutons d'actions */
+.action_div
+{
+	height: 50px;
+	padding: 0;
+	margin: 0;
+	margin-top: 10px;
+	width: 100%;
+	display: block;
+}
+
+
+.action_img
+{
+	height: 50px;
+	margin: 0;
+	display: inline-block;
+	cursor: pointer;
+}
+
+
+.action_span
+{
+	font-family: Regular;
+	font-size: 14pt;
+	color: grey;
+	height: 100%;
+	text-align: left;
+	line-height: 50px;
+	cursor: pointer;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+
+/* Conversation du canal */
+.message_infos_gauche{
+	text-align: left;
+	margin:0px;
+	margin-left: 18px;
+	padding:0px;
+	color: white;
+	font-family: Light;
+	font-size: 12pt;
+}
+
+
+.message_infos_droite{
+	text-align: right;
+	margin:0px;
+	margin-right: 18px;
+	padding:0px;
+	color: white;
+	font-family: Light;
+	font-size: 12pt;
+}
+
+
+.message_gauche{
+	margin-right: auto; 
+	margin-left: 0;
+	text-align: left;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	background-color: grey;
+	width: max-content;
+	padding: 7px 14px 7px 14px;
+	border-radius: 20px;
+	margin-bottom: 7px;
+}
+
+
+.message_droite{
+	margin-left: auto;
+	margin-right: 0;
+	text-align: right;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	background-color: #33cc33;
+	width: max-content;
+	padding: 7px 14px 7px 14px;
+	border-radius: 20px;
+	margin-bottom: 7px;
+}
+
+
+.message_saisie_bulle{
+	border: 0px;
+	max-width: calc(100% - 28px);
+	margin-left: auto;
+	margin-right: 0;
+	text-align: right;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	background-color: #33cc33;
+	width: max-content;
+	padding: 7px 14px 7px 14px;
+	border-radius: 20px;
+	border: none;
+	outline: none;
+	cursor: text;
+}
+
+
+div[contenteditable]:empty:focus::before, div[contenteditable]:empty::before {
+	content: 'Tapez ici pour écrire un message...';
+	font-style: italic;
+}
+
+
+/*========== PANNEAU LATTERAL ==========*/
+#panneau{
+	background-color: #242526;
+	margin: 0;
+	width: 394px;
+	position: absolute;
+	right: 0;
+	top: 57px;
+	bottom: 0px;
+	color: white;
+	visibility: visible;
+}
+
+
+/* Partie supérieure */
+.panneau_corps{
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	margin: 0;
+	padding: 14px;
+}
+
+
+.panneau_image {
+    height: 150px;
+    width: 150px;
+	margin: 14px;
+    border-radius: 85px;
+    border: 5px solid #9ae69a;
+}
+
+
+.centrer{
+	text-align: center;
+	width: 100%;
+}
+
+
+/* Partie inférieure */
+.panneau_pied{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	font-family: Regular;
+	font-size: 10pt;
+	position: absolute;
+	bottom: 7px;
+	width: 100%;
+	color: grey;
+}
+
+
+/* Formulaire de login */
+.login_champ{
+	width: 346px;
+	height: 35px;
+	background: #242526;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	padding-left: 14px;
+	padding-right: 14px;
+	border: 2.5px solid white;
+	border-radius: 20px;
+	outline:none;
+}
+
+
+.login_valider{
+	outline:none;
+	width: 379px;
+	height: 40px;
+	background: #242526;
+	color: white;
+	font-family: Light;
+	font-size: 14pt;
+	border: 2.5px solid white;
+	border-radius: 20px;
+}
+
+
+.login_echec{
+    color: red;
+}
+
+
+/* Tableau des participants */
+.participants_gauche{
+	width: 5px;
+	text-align: left;
+}
+
+
+.participants_droite{
+	width: auto;
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+section{
+    min-height: 200px;
+    background-color: cornflowerblue;
+    margin: 10px;
+}
+
+footer
+{
+    margin: 10px;
+    text-align: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.main_canal{
+	bottom: 0px;
+}
+
+
+.zone_saisie{
+	background-color: #242526;
+	margin: 0;
+	padding: 7px;
+	padding-left: 14px;
+	border-right: solid dimgrey 1px;
+	border-top: solid dimgrey 1px;
+	position: absolute;
+	left: 0;
+	right: 394px;
+	height: 50px;
+	bottom: 0px;
+	color: white;
+	text-align: right;
+	width: auto;
+}
+
+
+
+
+
+
+
