@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : index.js                                                                            //
 // Description : Script JS central pour afficher les bons composants en fonction des URL                //
-// Date de dernière mise à jour : 06/06/2022                                                            //
+// Date de dernière mise à jour : 08/06/2022                                                            //
 // ==================================================================================================== //
 
 // Importation des ressources
