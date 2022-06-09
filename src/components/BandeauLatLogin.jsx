@@ -24,7 +24,33 @@ const BandeauLatLogin = () => {
 
 
 	// Fonction de soumission du formulaire
-	const actionValiderFormulaire = async() => {
+	async function actionValiderFormulaire ()
+	{
+		event.preventDefault();
+		const json = JSON.stringify({ login: etatTmp, mdp: "utc" });
+		const res = await axios.post('http://localhost:8080/user/test2', json, {
+		headers: {
+			// Overwrite Axios's automatically set Content-Type
+			'Content-Type': 'application/json'
+		}
+		})
+		.then((res) => {
+			// Res.data is the response from your server
+			localStorage.setItem("apiData1", JSON.stringify(res.data));
+			 
+			});
+			
+		   var data = JSON.parse(localStorage.getItem("apiData1"));
+			alert(data.nom)
+			
+			/*
+alert('retout:' + res.data.data)
+		res.data.data; // '{"answer":42}'
+		res.data.headers['Content-Type']; // 'application/json',
+		
+
+
+		/*
 		// Préparation des données Json
 		const donneesJson = new FormData();
 		donneesJson.append("login", etatTmp.loginTmp)
@@ -42,13 +68,13 @@ const BandeauLatLogin = () => {
 			const result = await response.json();
 
 			// Action à la réception de la réponse
-			alert("test" + result)
-			console.log(result);
+			//alert("test" + result)
+			//console.log(result);
 
 		} catch(error) {
 			// Gestion des exceptions
 			alert("(!) Désolé, nous n'avons pu faire aboutir l'envoi de la requête ou la réception de sa réponse. Veuillez réessayer ultérieurement. Message d'erreur associé : " + error)
-		}
+		}*/
 	}
 
 
