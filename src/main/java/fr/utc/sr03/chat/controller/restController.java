@@ -75,8 +75,22 @@ public class restController
         System.out.println("(!) userLOGIN - NULL - mdp demandé : " + mdpTmp);
         List<User> utilisateursTrouves = userRepository.findByLoginAndMdpAndDesactive(loginTmp, mdpTmp, 0);
 
-        User utilisateurTmpValide = utilisateursTrouves.get(0);
-        return utilisateurTmpValide;
+        if (utilisateursTrouves.isEmpty() == true || utilisateursTrouves.size() > 1 || utilisateursTrouves.get(0).getAdmin() == 0)
+        {
+            // Dans le cas d'un problème d'authentification de l'utilisateur
+            System.out.println("(*) Authentification refusée pour l'utilisateur ");
+
+            // Retour de la méthode
+            User utilisateurTmpRetour = new User();
+            return utilisateurTmpRetour;
+
+        } else {
+
+            // Dans le cas d'une authentification valide de l'utilisateur
+            System.out.println("(*) Authentification réussie pour l'utilisateur .");
+            User utilisateurTmpRetour = utilisateursTrouves.get(0);
+            return utilisateurTmpRetour;
+        }
 
     }
 }
