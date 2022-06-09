@@ -12,6 +12,8 @@
 import React from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import { Rectangle } from '../authentification.js';
+//import utilisateurAuthentifie from '../index.js'
 
 
 // Fonction principale
@@ -24,10 +26,10 @@ const BandeauLatLogin = () => {
 
 
 	// Fonction de soumission du formulaire
-	async function actionValiderFormulaire ()
+	async function actionValiderFormulaire (event)
 	{
 		event.preventDefault();
-		const json = JSON.stringify({ login: etatTmp, mdp: "utc" });
+		const json = JSON.stringify({ login: etatTmp.loginTmp, mdp: etatTmp.mdpTmp });
 		const res = await axios.post('http://localhost:8080/user/test2', json, {
 		headers: {
 			// Overwrite Axios's automatically set Content-Type
@@ -41,6 +43,9 @@ const BandeauLatLogin = () => {
 			});
 			
 		   var data = JSON.parse(localStorage.getItem("apiData1"));
+		   //alert("user="utilisateurAuthentifie)
+		   const carre = new Rectangle(10, 10);
+		   //alert(carre.ge)
 			alert(data.nom)
 			
 			/*
