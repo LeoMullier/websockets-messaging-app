@@ -2,6 +2,7 @@ package fr.utc.sr03.chat.controller;
 
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.User;
+import fr.utc.sr03.chat.model.UserTmp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +21,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 //@RequestMapping(value = "/NewCustomer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class restController
 {
     // Ajout des repository
@@ -63,16 +65,18 @@ public class restController
         }
     }
 
-
     @PostMapping(value = "/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User afficherPOST2(@RequestBody User utilisateur)
+    public User afficherPOST2(@RequestBody UserTmp utilisateurTmp)
     {
-        System.out.println("(*) Requete entrante****.");
+        System.out.println("(!) userLOGIN - NULL - Requête POST entrante pour authentification de l'utilisateur.");
+        String loginTmp = utilisateurTmp.getLogin();
+        String mdpTmp = utilisateurTmp.getMdp();
+        System.out.println("(!) userLOGIN - NULL - login demandé : " + loginTmp);
+        System.out.println("(!) userLOGIN - NULL - mdp demandé : " + mdpTmp);
+        List<User> utilisateursTrouves = userRepository.findByLoginAndMdpAndDesactive(loginTmp, mdpTmp, 0);
 
-        List<User> utilisateursTrouves = userRepository.findById(1);
-
-        User user_temp = utilisateursTrouves.get(0);
-        return user_temp;
+        User utilisateurTmpValide = utilisateursTrouves.get(0);
+        return utilisateurTmpValide;
 
     }
 }
