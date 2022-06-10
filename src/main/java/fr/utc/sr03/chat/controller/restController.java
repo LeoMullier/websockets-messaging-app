@@ -1,9 +1,9 @@
 package fr.utc.sr03.chat.controller;
 
 import fr.utc.sr03.chat.dao.UserRepository;
-import fr.utc.sr03.chat.model.User;
-import fr.utc.sr03.chat.model.UserTmp;
-import fr.utc.sr03.chat.model.ValidationAuthentification;
+import fr.utc.sr03.chat.dao.InvitesRepository;
+import fr.utc.sr03.chat.dao.CanalRepository;
+import fr.utc.sr03.chat.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -38,42 +38,11 @@ public class restController
 
 
     // Gestion des utilisateurs authentifiés
-    public Dictionary<String, String> utilisateursAuthentifies = new Hashtable<>();
-    //                ip      token
-
-    @GetMapping("/test")
-    public void afficherget()
-    {
-        System.out.println("(*) Requete entrante GET.");
-    }
+    public Hashtable<String, String> utilisateursAuthentifies = new Hashtable<String, String>();
+    //               ip      token
 
 
-
-    @PostMapping("/test")
-    public User afficher(@RequestBody User utilisateur)
-    {
-        System.out.println("(*) Requete entrante POST1.");
-
-        List<User> utilisateursTrouves = userRepository.findByLoginAndMdpAndDesactive(utilisateur.getLogin(), utilisateur.getMdp(), 0);
-        System.out.println("(*) test Requete entrante POST1.");
-        if (utilisateursTrouves.isEmpty() == true || utilisateursTrouves.size() > 1 || utilisateursTrouves.get(0).getAdmin() == 0)
-        {
-            // Dans le cas d'un problème d'authentification de l'utilisateur
-            System.out.println("(*) Authentification refusée pour l'utilisateur " + utilisateur.getLogin() + ".");
-
-            // Retour de la méthode
-            User user_temp = new User();
-            return user_temp;
-
-        } else {
-
-            // Dans le cas d'une authentification valide de l'utilisateur
-            System.out.println("(*) Authentification réussie pour l'utilisateur " + utilisateur.getLogin() + ".");
-            User user_temp = utilisateursTrouves.get(0);
-            return user_temp;
-        }
-    }
-
+    // BandeauLatLogin
     @PostMapping(value = "/test2", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationAuthentification afficherPOST2(@RequestBody UserTmp utilisateurTmp, HttpServletRequest request)
     {
@@ -123,91 +92,76 @@ public class restController
         }
 
     }
-}
 
 
-
-
-
-
-
-
-
-
-/*
-    @GetMapping("/one/{login}")
-    public TrombiIndividusDTO getIndividu(@PathVariable String login)
+    // BandeauLatAccueil - Transmettre les informations sur l'utilisateur
+    @PostMapping(value = "/bandeau_lat_accueil", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnes BandeauLatAccueil(@RequestBody Token tokenEntrant, HttpServletRequest request)
     {
-        TrombiIndividus trombiIndividus = trombiService.getOne(login);
+        String ipClient = request.getRemoteAddr();
+        System.out.println("(!) USER-BandeauLatAccueil - " + ipClient +" - Requête POST entrante.");
 
-        ModelMapper modelMapper = ApiService.getModelMapper(Optional.empty());
+        if (utilisateursAuthentifies.get(tokenEntrant.getIdClient()) != tokenEntrant.getTokenClient())
+        {
+            System.out.println("(!) USER-BandeauLatAccueil - " + ipClient +" - Utilisateur non-authentifié, retour null envoyé.");
+            return null;
+        } else {
+            System.out.println("(!) USER-BandeauLatAccueil - " + ipClient +" - Utilisateur bien authentifié, préparation des doonées de retour.");
+            Optional<User> utilisateursTrouves = userRepository.findById(tokenEntrant.getIdClient());
+            List<Invites> canauxInvitesTrouves = invitesRepository.findByIduser(tokenEntrant.getIdClient());
+            List<Canal> canauxProprioTrouves = canalRepository.findByUserproprio(tokenEntrant.getIdClient());
+            int nbCanauxInscrits = canauxProprioTrouves.size() + canauxInvitesTrouves.size();
+            Donnes donneesRetour = new Donnes(utilisateursTrouves.get().getPrenom(),
+                    utilisateursTrouves.get().getNom(),
+                    utilisateursTrouves.get().getLogin(),
+                    String.valueOf(utilisateursTrouves.get().getAdmin()),
+                    String.valueOf(utilisateursTrouves.get().getEnligne()),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
 
-        return user;
-    }
+        String loginTmp = utilisateurTmp.getLogin();
+        String mdpTmp = utilisateurTmp.getMdp();
+        System.out.println("(!) userLOGIN - NULL - login demandé : " + loginTmp);
+        System.out.println("(!) userLOGIN - NULL - mdp demandé : " + mdpTmp);
+        List<User> utilisateursTrouves = userRepository.findByLoginAndMdpAndDesactive(loginTmp, mdpTmp, 0);
 
-    @GetMapping("/liste")
-    @ApiOperation(value = "Trombi complet", notes = "Notes")
-    private List<TrombiIndividusDTO> getAnnuaire()
-    {
-        List<TrombiIndividus> trombiIndividus = trombiService.getAnnuaire();
+        if (utilisateursTrouves.isEmpty() == true || utilisateursTrouves.size() > 1 || utilisateursTrouves.get(0).getAdmin() == 0)
+        {
+            // Dans le cas d'un problème d'authentification de l'utilisateur
+            System.out.println("(*) Authentification refusée pour l'utilisateur ");
 
-        ModelMapper modelMapper = ApiService.getModelMapper(Optional.empty());
+            // Retour de la méthode
+            return null;
+        } else {
 
-        return modelMapper.map(trombiIndividus, new TypeToken<List<TrombiIndividusDTO>>() {}.getType());
-    }
+            // Dans le cas d'une authentification valide de l'utilisateur
 
-    @GetMapping("/gi")
-    @ApiOperation(value = "Trombi complet", notes = "Notes")
-    private List<TrombiIndividusDTO> getGI(@RequestParam Optional<String> name, @RequestParam Optional<String> firstname, @RequestParam Optional<String> photo)
-    {
-        List<TrombiIndividus> trombiIndividus = trombiService.getGI();
-
-
-        if(photo.isPresent()) {
-            if (photo.get().equals("N")) {
-                for (int i = 0; i < trombiIndividus.size(); i++) {
-                    trombiIndividus.get(i).setPhoto(null);
-                }
+            String alphabetsInUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            String alphabetsInLowerCase = "abcdefghijklmnopqrstuvwxyz";
+            String numbers = "0123456789";
+            // create a super set of all characters
+            String allCharacters = alphabetsInLowerCase + alphabetsInUpperCase + numbers;
+            // initialize a string to hold result
+            StringBuffer randomString = new StringBuffer();
+            // loop for 10 times
+            for (int i = 0; i < 64; i++) {
+                // generate a random number between 0 and length of all characters
+                int randomIndex = (int)(Math.random() * allCharacters.length());
+                // retrieve character at index and add it to result
+                randomString.append(allCharacters.charAt(randomIndex));
             }
+            String tokenClient = randomString.toString();
+
+            utilisateursAuthentifies.put(adresseIpClient, tokenClient);
+
+            ValidationAuthentification retourAuthentification = new ValidationAuthentification(utilisateursTrouves.get(0).getId(), tokenClient);
+            System.out.println("(*) Authentification réussie pour l'utilisateur .");
+
+            return retourAuthentification;
         }
-
-        if(name.isPresent()) {
-            trombiIndividus = trombiIndividus.stream().filter(p -> p.getNomAz().contains(name.get())).collect(Collectors.toList());
-        }
-
-        if(firstname.isPresent()) {
-            trombiIndividus = trombiIndividus.stream().filter(p -> p.getPrenomAz().contains(firstname.get())).collect(Collectors.toList());
-        }
-
-        ModelMapper modelMapper = ApiService.getModelMapper(Optional.empty());
-
-        return modelMapper.map(trombiIndividus, new TypeToken<List<TrombiIndividusDTO>>() {}.getType());
     }
-
-    @GetMapping("/hds")
-    @ApiOperation(value = "Trombi complet", notes = "Notes")
-    private List<TrombiIndividusDTO> getHDS()
-    {
-        List<TrombiIndividus> trombiIndividus = trombiService.getHDS();
-
-        ModelMapper modelMapper = ApiService.getModelMapper(Optional.empty());
-
-        return modelMapper.map(trombiIndividus, new TypeToken<List<TrombiIndividusDTO>>() {}.getType());
-    }
-
-    @GetMapping("/lmac")
-    @ApiOperation(value = "Trombi complet", notes = "Notes")
-    private List<TrombiIndividusDTO> getLMAC()
-    {
-        List<TrombiIndividus> trombiIndividus = trombiService.getLMAC();
-
-        ModelMapper modelMapper = ApiService.getModelMapper(Optional.empty());
-
-        return modelMapper.map(trombiIndividus, new TypeToken<List<TrombiIndividusDTO>>() {}.getType());
-    }
-
-
-
-
 }
-*/
