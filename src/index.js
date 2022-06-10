@@ -18,12 +18,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // Importations des composants de barres supérieures
 import {
 	BarreSupLogin,
+	BarreSupAccueil,
 } from "./components";
 
 
 // Importation des composants de contenus
 import {
 	ContenuLogin,
+	ContenuAccueil,
 	Bienvenue,
 	Navigation,
 	Footer,
@@ -39,6 +41,7 @@ import {
 // Importations des composants de bandeaux latéraux
 import {
 	BandeauLatLogin,
+	BandeauLatAccueil,
 } from "./components";
 
 
@@ -48,6 +51,7 @@ ReactDOM.render(
 		{/* Affichage de la barre supérieure */}
 		<Routes>
 			<Route path="/bienvenue" element={<BarreSupLogin />} />
+			<Route path="/accueil" element={<BarreSupAccueil />} />
 		</Routes>
 
 		{/* Affichage du contenu de la page */}
@@ -55,6 +59,7 @@ ReactDOM.render(
 			<Route path="/" element={<Home />} />
 			{/* <Redriect from='/' to="/bienvenue" /> */}
 			<Route path="/bienvenue" element={<ContenuLogin />} />
+			<Route path="/accueil" element={<ContenuAccueil />} />
 
 			<Route path="/about" element={<About />} />
 			<Route path="/contact" element={<Contact />} />
@@ -66,6 +71,7 @@ ReactDOM.render(
 		{/* Affichage de la bandeaux latéraux */}
 		<Routes>
 			<Route path="/bienvenue" element={<BandeauLatLogin />}/>
+			<Route path="/accueil" element={<BandeauLatAccueil />} />
 		</Routes>
 	</Router>,
 

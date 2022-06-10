@@ -4,22 +4,25 @@
 //                                                                                                      //
 // Nom du fichier : index.js                                                                            //
 // Description : Script JS de déclaration et d'export des différents composants dans le dossier         //
-// Date de dernière mise à jour : 06/06/2022                                                            //
+// Date de dernière mise à jour : 10/06/2022                                                            //
 // ==================================================================================================== //
 
 // ========== Barres supérieures ==========//
 // Page de login
 export { default as BarreSupLogin } from "./BarreSupLogin";
+export { default as BarreSupAccueil } from "./BarreSupAccueil";
 
 
 // ========== Contenus ========== //
 // Page de login
 export { default as ContenuLogin } from "./ContenuLogin";
+export { default as ContenuAccueil } from "./ContenuAccueil";
 
 
 // ========== Bandeau lattéral ========== //
 // Page de login
 export { default as BandeauLatLogin } from "./BandeauLatLogin";
+export { default as BandeauLatAccueil } from "./BandeauLatAccueil";
 
 
 // ========== Autres exports présents dans le git récupéré ========== //

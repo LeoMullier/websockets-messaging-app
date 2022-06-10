@@ -19,7 +19,7 @@ function ContenuLogin() {
 			<main id="corps">
 				{/* Navigation dans les rubriques */}
 				<nav>
-					<p class="titre2 sans_curseur">
+					<p class="titre1">
 						Liste des utilisateurs</p>
 					<p class="titre2 sans_curseur">
 						Liste des conversations</p>

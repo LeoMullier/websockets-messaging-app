@@ -17,11 +17,11 @@ import { useState } from 'react';
 
 
 // Fonction principale
-const BandeauLatLogin = () => {
+const BandeauLatAccueil = () => {
 	// Définition de toutes les variables états
 	const [etatTmp, setetatTmp] = React.useState({
-		loginTmp: '',
-		mdpTmp: ''
+		idClientTmp: '',
+		tokenClientTmp: ''
 	});
 
 
@@ -52,7 +52,7 @@ const BandeauLatLogin = () => {
 			document.cookie = "idclient=" + data.idClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
 			document.cookie = "tokenclient=" + data.tokenClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
 			alert(document.cookie)
-			window.location.assign("/accueil")
+			window.location.href(accueil)
 		}
 			
 		
@@ -60,20 +60,21 @@ const BandeauLatLogin = () => {
 
 
 	// Fonctions de mise à jour des états
-	const actionChangerEtatLogin = (event) => {
+	const actionChangerEtatIdClient = (valeur) => {
 		setetatTmp({
 			...etatTmp,
-			loginTmp: event.target.value
+			idClientTmp: valeur
 		});
 	}
 
-	const actionChangerEtatMdp = (event) => {
+	const actionChangerEtatTokenClient = (valeur) => {
 		setetatTmp({
 			...etatTmp,
-			mdpTmp: event.target.value
+			tokenClientTmp: valeur
 		});
 	}
 
+	
 
 	// Fonction de render
 	return (
@@ -81,35 +82,32 @@ const BandeauLatLogin = () => {
 			<aside id="panneau">
 				<div class="panneau_corps">
 					<center>
-					{/* Image aléatoire */}
-					<img class="panneau_image" src="https://picsum.photos/500"/>
-
-					{/* Formulaire d'authentification */}
-					<form onSubmit={actionValiderFormulaire}>
-						<label>Email :</label>
+						<img class="panneau_image" src="https://picsum.photos/500"/>
 						<br />
-						<input type="text" class="login_champ" placeholder="Tapez ici..."  required onChange={actionChangerEtatLogin}/>
-						<br />
-						<br />
-						<label>Mot de passe :</label>
-						<br />
-						<input type="password" class="login_champ" placeholder="Tapez ici..."  required onChange={actionChangerEtatMdp}/>
+						<span class="titre1">
+							Léo Mullier
+						</span>
+						<br />leo.mullier@etu.utc.fr
+						<br />Inscrit sur 6 conversations
 						<br />
 						<br />
-						<input type="checkbox" class="login_check" checked="checked"/> Se souvenir de moi
-						<br />
-						<input class="login_valider" type="submit" value="Se connecter"/>
-						</form>
+						<br /><font color="#33cc33">●</font> en ligne
+						<br /><font color="orange">●</font> administrateur
 					</center>
 				</div>
-
-				{/* Pied de page */}
+				
 				<footer class="panneau_pied">
 					<p>
 						&lt;/&gt; Développé pour SR03 en P2022 par
 						<br />Bastian Cosson, Léo Mullier, Cédric Martinet
 					</p>
 				</footer>
+				<script>
+					
+						actionChangerEtatIdClient("bonjour");
+						alert(etatTmp.idClientTmp);
+					
+				</script>
 			</aside>
 		</div>
 	)
@@ -117,7 +115,7 @@ const BandeauLatLogin = () => {
 
 
 // Export vers le reste du projet
-export default BandeauLatLogin;
+export default BandeauLatAccueil;
 
 
 
