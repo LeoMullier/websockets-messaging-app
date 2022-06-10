@@ -15,65 +15,28 @@ import { useState } from 'react';
 //import { Rectangle } from '../authentification.js';
 //import utilisateurAuthentifie from '../index.js'
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+  }
 
 // Fonction principale
 const BandeauLatAccueil = () => {
-	// Définition de toutes les variables états
-	const [etatTmp, setetatTmp] = React.useState({
-		idClientTmp: '',
-		tokenClientTmp: ''
-	});
-
-
-	// Fonction de soumission du formulaire
-	async function actionValiderFormulaire (event)
-	{
-		event.preventDefault();
-
-
-		// Envoi de la requête
-		const json = JSON.stringify({ login: etatTmp.loginTmp, mdp: etatTmp.mdpTmp });
-		const res = await axios.post('http://localhost:8080/user/test2', json, {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		.then((res) => {
-			// Réception de la réponse du serveur
-			localStorage.setItem("apiData1", JSON.stringify(res.data));
-		});
-			
-		var data = JSON.parse(localStorage.getItem("apiData1"));
-		if (data == "")
-		{
-
-		} else {
-			alert(data.tokenClient)
-			document.cookie = "idclient=" + data.idClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
-			document.cookie = "tokenclient=" + data.tokenClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
-			alert(document.cookie)
-			window.location.href(accueil)
-		}
-			
-		
-	}
-
-
-	// Fonctions de mise à jour des états
-	const actionChangerEtatIdClient = (valeur) => {
-		setetatTmp({
-			...etatTmp,
-			idClientTmp: valeur
-		});
-	}
-
-	const actionChangerEtatTokenClient = (valeur) => {
-		setetatTmp({
-			...etatTmp,
-			tokenClientTmp: valeur
-		});
-	}
-
+	let idClientTmp = getCookie("idClient")
+	var tokenClientTmp = getCookie("tokenClient")
+	alert("cookie id : " + idClientTmp)
+	alert("cookie token : " + tokenClientTmp)
 	
 
 	// Fonction de render

@@ -16,6 +16,15 @@ import { useState } from 'react';
 //import utilisateurAuthentifie from '../index.js'
 
 
+// Créer ou actualiser un cookie
+function setCookie(cname, cvalue) {
+	const d = new Date();
+	d.setTime(d.getTime() + (0.01*24*60*60*1000));
+	let expires = "expires="+ d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
 // Fonction principale
 const BandeauLatLogin = () => {
 	// Définition de toutes les variables états
@@ -49,8 +58,8 @@ const BandeauLatLogin = () => {
 
 		} else {
 			alert(data.tokenClient)
-			document.cookie = "idclient=" + data.idClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
-			document.cookie = "tokenclient=" + data.tokenClient + "; expires=Mon, 20 Sep 2022 12:00:00 UTC";
+			setCookie("idClient", data.idClient)
+			setCookie("tokenClient", data.tokenClient)
 			alert(document.cookie)
 			window.location.assign("/accueil")
 		}
