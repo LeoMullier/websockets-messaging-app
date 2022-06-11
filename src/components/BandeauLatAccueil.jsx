@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : BandeauLatLogin.jsx                                                                 //
 // Description : Script JS pour afficher le bandeau latéral lorsqu'on est sur la phase de login         //
-// Date de dernière mise à jour : 10/06/2022                                                            //
+// Date de dernière mise à jour : 11/06/2022                                                            //
 // ==================================================================================================== //
 
 
@@ -12,34 +12,6 @@
 import React from 'react';
 import axios from 'axios';
 import parse from "html-react-parser";
-import { useState } from 'react';
-
-
-// Créer ou actualiser un cookie
-function setCookie(cname, cvalue) {
-	const d = new Date();
-	d.setTime(d.getTime() + (0.01*24*60*60*1000)); // Expiration dans 15min
-	let expires = "expires="+ d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-
-// Lire la valeur d'un cookie
-function getCookie(cname) {
-	let name = cname + "=";
-	let decodedCookie = decodeURIComponent(document.cookie);
-	let ca = decodedCookie.split(';');
-	for(let i = 0; i <ca.length; i++) {
-	  let c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
-	}
-	return "";
-  }
 
 
 // Classe principale
@@ -122,10 +94,10 @@ export default class BandeauLatAccueil extends React.Component{
 		})
 		.then((res) => {
 			// Réception de la réponse du serveur
-			localStorage.setItem("apiData2", JSON.stringify(res.data));
+			localStorage.setItem("dataReq", JSON.stringify(res.data));
 		});
 			
-		var data = JSON.parse(localStorage.getItem("apiData2"));
+		var data = JSON.parse(localStorage.getItem("dataReq"));
 		if (data == "" || data.status != "valide")
 		{
 			// Actions à réaliser pour une réponse négative
@@ -156,7 +128,7 @@ export default class BandeauLatAccueil extends React.Component{
 		} else {
 			this.setState({ admin: "" })
 		}
-	  }
+	}
 
 
 	// Fonction de render  

@@ -26,15 +26,6 @@ import {
 import {
 	ContenuLogin,
 	ContenuAccueil,
-	Bienvenue,
-	Navigation,
-	Footer,
-	Home,
-	About,
-	Contact,
-	Blog,
-	Posts,
-	Post,
 } from "./components";
 
 
@@ -50,28 +41,20 @@ ReactDOM.render(
 	<Router>
 		{/* Affichage de la barre supérieure */}
 		<Routes>
-			<Route path="/bienvenue" element={<BarreSupLogin />} />
-			<Route path="/accueil" element={<BarreSupAccueil />} />
+			<Route exact path="/bienvenue" element={<BarreSupLogin />} />
+			<Route exact path="/accueil" element={<BarreSupAccueil />} />
 		</Routes>
 
 		{/* Affichage du contenu de la page */}
 		<Routes>
-			<Route path="/" element={<Home />} />
-			{/* <Redriect from='/' to="/bienvenue" /> */}
-			<Route path="/bienvenue" element={<ContenuLogin />} />
-			<Route path="/accueil" element={<ContenuAccueil />} />
-
-			<Route path="/about" element={<About />} />
-			<Route path="/contact" element={<Contact />} />
-			<Route path="/blog" element={<Blog />}/>
-			<Route path="" element={<Posts />} />
-			<Route path=":postSlug" element={<Post />} />
+			<Route exact path="/bienvenue" element={<ContenuLogin />} />
+			<Route exact path="/accueil" element={<ContenuAccueil />} />
 		</Routes>
 
 		{/* Affichage de la bandeaux latéraux */}
 		<Routes>
-			<Route path="/bienvenue" element={<BandeauLatLogin />}/>
-			<Route path="/accueil" element={<BandeauLatAccueil />} />
+			<Route exact path="/bienvenue" element={<BandeauLatLogin />}/>
+			<Route exact path="/accueil" element={<BandeauLatAccueil />} />
 		</Routes>
 	</Router>,
 
