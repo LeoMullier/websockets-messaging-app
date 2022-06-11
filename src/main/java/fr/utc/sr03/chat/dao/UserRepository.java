@@ -14,7 +14,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     // ========== METHODES DE RECHERCHES DANS LA BDD ========== //
     List<User> findByLoginAndMdpAndDesactive(String login, String mdp, int desactive);
-    List<User> findByDesactive(int desactive);
+    List<User> findByIdAndDesactive(Long id, int desactive);
     List<User> findByLogin(String login);
-    List<User> findById(int id);
 }

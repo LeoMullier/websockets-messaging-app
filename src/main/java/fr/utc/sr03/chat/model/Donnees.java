@@ -1,8 +1,8 @@
 package fr.utc.sr03.chat.model;
 
-// ========== CLASSE USER ========== //
-public class Donnes {
-    // ========== ATTRIBUTS DE USER ========== //
+// ========== CLASSE DONNEES ========== //
+public class Donnees {
+    // ========== ATTRIBUTS DE DONNEES ========== //
     private String l0;
     private String l1;
     private String l2;
@@ -13,11 +13,12 @@ public class Donnes {
     private String l7;
     private String l8;
     private String l9;
+    private String status;
 
 
 
-    // ========== CONSTRUCTEUR DE USER ========== //
-    public Donnes(String l0, String l1, String l2, String l3, String l4, String l5, String l6, String l7, String l8, String l9) {
+    // ========== CONSTRUCTEUR DE DONNEES ========== //
+    public Donnees(String l0, String l1, String l2, String l3, String l4, String l5, String l6, String l7, String l8, String l9, String status) {
         this.l0 = l0;
         this.l1 = l1;
         this.l2 = l2;
@@ -28,10 +29,10 @@ public class Donnes {
         this.l7 = l7;
         this.l8 = l8;
         this.l9 = l9;
+        this.status = status;
     }
 
-
-    // ========== FONCTIONS GET ET SET DE USER ========== //
+    // ========== FONCTIONS GET ET SET DE DONNEES ========== //
     public String getL0() {
         return l0;
     }
@@ -110,5 +111,13 @@ public class Donnes {
 
     public void setL9(String l9) {
         this.l9 = l9;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
