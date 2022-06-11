@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : BandeauLatLogin.jsx                                                                 //
 // Description : Script JS pour afficher le bandeau latéral lorsqu'on est sur la phase de login         //
-// Date de dernière mise à jour : 09/06/2022                                                            //
+// Date de dernière mise à jour : 10/06/2022                                                            //
 // ==================================================================================================== //
 
 
@@ -19,7 +19,7 @@ import { useState } from 'react';
 // Créer ou actualiser un cookie
 function setCookie(cname, cvalue) {
 	const d = new Date();
-	d.setTime(d.getTime() + (0.01*24*60*60*1000));
+	d.setTime(d.getTime() + (0.01*24*60*60*1000)); // Expiration dans 15min
 	let expires = "expires="+ d.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
@@ -55,12 +55,12 @@ const BandeauLatLogin = () => {
 		var data = JSON.parse(localStorage.getItem("apiData1"));
 		if (data == "")
 		{
-
+			// Actions à réaliser pour une réponse négative
+			window.location.assign("/bienvenue")
 		} else {
-			alert(data.tokenClient)
+			// Actions à réaliser pour une réponse positive
 			setCookie("idClient", data.idClient)
 			setCookie("tokenClient", data.tokenClient)
-			alert(document.cookie)
 			window.location.assign("/accueil")
 		}
 			
