@@ -51,8 +51,7 @@ public class restController
     public ValidationAuthentification afficherPOST2(@RequestBody UserTmp utilisateurTmp, HttpServletRequest request)
     {
         String adresseIpClient = request.getRemoteAddr();
-        System.out.println("(blaip) "+adresseIpClient);
-
+        System.out.println(" ");
         System.out.println("(!) userLOGIN - NULL - Requête POST entrante pour authentification de l'utilisateur.");
         String loginTmp = utilisateurTmp.getLogin();
         String mdpTmp = utilisateurTmp.getMdp();
@@ -98,12 +97,172 @@ public class restController
     }
 
 
+    // ContenuAccueilA - Transmettre la liste des canaux pour affichage
+    @PostMapping(value = "/contenu_accueil/canalproprio", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<Canal> ContenuAccueilA(@RequestBody Token tokenEntrant, HttpServletRequest request)
+    {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuAccueilA - " + ipClient +" - Requête POST entrante sur le chemin /canalproprio.");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-ContenuAccueilA - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
+        {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            return null;
+        } else {
+            // Succès dans le cas où l'authentification est confirmée
+            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - L'utilisateur a bien été authentifié.");
+
+            // Préparation des données à envoyer
+            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
+            List<Canal> canauxProprioTrouves = canalRepository.findByUserproprio(tokenEntrant.getIdClient());
+            List<Invites> canauxInvitesTrouves = invitesRepository.findByIduser(tokenEntrant.getIdClient());
+
+            // Envoi des données au React
+            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Retour de la fonction : packet de données contenant la liste des canaux dont l'utilisateur est propriétaires.");
+            return canauxProprioTrouves;
+        }
+    }
+
+
+    // ContenuAccueilB - Transmettre les informations sur l'utilisateur proprio d'un canal pour affichage
+    @PostMapping(value = "/contenu_accueil/userproprio/{numero}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnees ContenuAccueilB(@RequestBody Token tokenEntrant, @PathVariable("numero") String numero, HttpServletRequest request)
+    {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuAccueilB - " + ipClient +" - Requête POST entrante sur le chemin /userproprio avec numero=" + numero + ".");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-ContenuAccueilB - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
+        {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            // Succès dans le cas où l'authentification est confirmée
+            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - L'utilisateur a bien été authentifié.");
+
+            // Préparation des données à envoyer
+            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
+            Optional<User> utilisateurProprio = userRepository.findById(Long.valueOf(1));
+            System.out.println("!!!" + utilisateurProprio.isEmpty() + "--"+ Long.valueOf(numero));
+
+            // Envoi des données au React
+            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Retour de la fonction : packet de données contenant nom/prenom de l'utilisateur propriétaire demandé.");
+            Donnees donneesRetour = new Donnees(
+                    String.valueOf(utilisateurProprio.get().getNom()),
+                    String.valueOf(utilisateurProprio.get().getPrenom()),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "valide");
+            return donneesRetour;
+        }
+    }
+
+
+    // ContenuAccueilC - Transmettre les informations sur 3 utilisateurs invités d'un canal pour affichage
+    @PostMapping(value = "/contenu_accueil/usersinvites/{numero}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnees ContenuAccueilC(@RequestBody Token tokenEntrant, @PathVariable("numero") Integer numero, HttpServletRequest request)
+    {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuAccueilC - " + ipClient +" - Requête POST entrante sur le chemin /userproprio avec numero=" + numero + ".");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-ContenuAccueilC - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
+        {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            // Succès dans le cas où l'authentification est confirmée
+            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - L'utilisateur a bien été authentifié.");
+
+            // Préparation des données à envoyer
+            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
+            List<Invites> utilisateursInvites = invitesRepository.findByIdcanal(numero);
+            String[] prenoms = new String[]{"", "", ""};
+            String[] noms = new String[]{"", "", ""};
+            int taille = utilisateursInvites.size();
+            int max = 3;
+            int i = 0;
+            while (taille > 0 && max > 0){
+                Optional<User> utilisateurInvite = userRepository.findById(utilisateursInvites.get(i).getIduser());
+                prenoms[i]=utilisateurInvite.get().getPrenom();
+                noms[i]=utilisateurInvite.get().getNom();
+                i++;
+                taille --;
+                max--;
+            }
+
+            // Envoi des données au React
+            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Retour de la fonction : packet de données contenant nom/prenom de l'utilisateur propriétaire demandé.");
+            Donnees donneesRetour = new Donnees(
+                    prenoms[0],
+                    noms[0],
+                    prenoms[1],
+                    noms[1],
+                    prenoms[2],
+                    noms[2],
+                    "",
+                    "",
+                    "",
+                    "",
+                    "valide");
+            return donneesRetour;
+        }
+    }
+
+
     // BandeauLatAccueil - Transmettre les informations sur l'utilisateur actuel pour affichage
     @PostMapping(value = "/bandeau_lat_accueil", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Donnees BandeauLatAccueil(@RequestBody Token tokenEntrant, HttpServletRequest request)
     {
         // Initialisations
         String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
         System.out.println("(!) USER-BandeauLatAccueil - " + ipClient +" - Requête POST entrante.");
 
         // Vérification de l'authentification avec ip et token

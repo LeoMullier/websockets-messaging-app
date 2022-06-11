@@ -19,7 +19,7 @@ public class Canal {
     private long userproprio;
 
     @Column(name = "titre")
-    private String tire;
+    private String titre;
 
     @Column(name = "description")
     private String description;
@@ -55,12 +55,12 @@ public class Canal {
         this.userproprio = userproprio;
     }
 
-    public String getTire() {
-        return tire;
+    public String getTitre() {
+        return titre;
     }
 
-    public void setTire(String tire) {
-        this.tire = tire;
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public String getDescription() {

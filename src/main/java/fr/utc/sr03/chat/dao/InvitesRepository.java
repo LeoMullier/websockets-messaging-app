@@ -16,4 +16,5 @@ import java.util.Optional;
 public interface InvitesRepository extends JpaRepository<Invites, Long> {
     // ========== METHODES DE RECHERCHES DANS LA BDD ========== //
     List<Invites> findByIduser(long iduser);
+    List<Invites> findByIdcanal(long idcanal);
 }
