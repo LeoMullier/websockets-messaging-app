@@ -9,8 +9,8 @@
 
 
 /*========== INITIALISATIONS ==========*/
-var panneau_etat = 'a';
-var retour_etat = "off";
+// var panneau_etat = 'a';
+// var retour_etat = "off";
 var panneau = document.getElementById("panneau")
 var corps = document.getElementById("corps")
 
@@ -103,66 +103,67 @@ function masquer_retour_tmc(){
 
 
 /*========== AFFICHER RETOUR LOGIN ==========*/
-function afficher_retour_login(){
-    if (retour_etat = "off")
-    {
-        let entete_image = document.getElementById("entete_image");
-        let entete_titre = document.getElementById("entete_titre");
-        let entete = document.getElementById("entete");
-        let entete_titre_width = entete_titre.offsetWidth;
-        entete_image.src = "img/logout.png";
-        entete_titre.style.width = entete_titre_width + 'px';
-        entete_titre.innerHTML = `Se déconnecter`;
-        retour_etat = "on";
-    }
-}
+// function afficher_retour_login(){
+//     if (retour_etat = "off")
+//     {
+//         let entete_image = document.getElementById("entete_image");
+//         let entete_titre = document.getElementById("entete_titre");
+//         let entete = document.getElementById("entete");
+//         let entete_titre_width = entete_titre.offsetWidth;
+//         entete_image.src = "img/logout.png";
+//         entete_titre.style.width = entete_titre_width + 'px';
+//         entete_titre.innerHTML = `Se déconnecter`;
+//         retour_etat = "on";
+//     }
+// }
 
 
 /*========== MASQUER RETOUR LOGIN ==========*/
-function masquer_retour_login(){
-    if (retour_etat = "on")
-    {
-        let entete_image = document.getElementById("entete_image");
-        let entete_titre = document.getElementById("entete_titre");
-        entete_image.src = "img/logo.png";
-        entete_titre.style.width = "unset";
-        entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
-        retour_etat= "off";
-    }
-}
+// function masquer_retour_login(){
+//     if (retour_etat = "on")
+//     {
+//         let entete_image = document.getElementById("entete_image");
+//         let entete_titre = document.getElementById("entete_titre");
+//         entete_image.src = "img/logo.png";
+//         entete_titre.style.width = "unset";
+//         entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
+//         retour_etat= "off";
+//     }
+// }
 
 /*========== MASQUER PANNEAU LATTERAL ==========*/
-function masquer_panneau()
-{
-    panneau.style.visibility = "hidden";
-    corps.style.right = "0px";
-    panneau_etat = 'm';
-    console.log("(!) Disparition du panneau lattéral réussie");
-}
+// function masquer_panneau()
+// {
+//     panneau.style.visibility = "hidden";
+//     corps.style.right = "0px";
+//     panneau_etat = 'm';
+//     console.log("(!) Disparition du panneau lattéral réussie");
+// }
 
 
 /*========== AFFICHER PANNEAU LATTERAL ==========*/
-function afficher_panneau()
-{
-    panneau.style.visibility = "visible";
-    corps.style.right = "394px";
-    panneau_etat = 'a';
-    console.log("(!) Apparition du panneau lattéral réussie");
-}
+// function afficher_panneau()
+// {
+//     panneau.style.visibility = "visible";
+//     corps.style.right = "394px";
+//     panneau_etat = 'a';
+//     console.log("(!) Apparition du panneau lattéral réussie");
+// }
 
 
 /*========== PANNEAU LATTERAL DYNAMIQUE ==========*/
-function changer_panneau()
-{
-	if (panneau_etat == 'a')
-    {
-        masquer_panneau();
-    }
-    else
-    {
-        afficher_panneau();
-    }
-}
+// function changer_panneau()
+// {
+//     alert("bonjourrrrr")
+// 	if (panneau_etat == 'a')
+//     {
+//         masquer_panneau();
+//     }
+//     else
+//     {
+//         afficher_panneau();
+//     }
+// }
 
 
 /*========== POSITIONNEMENT EN BAS DE LA CONVERSATION ==========*/
@@ -217,6 +218,7 @@ function masquer_enligne(id, chaine){
 
 /*========== AFFICHER LE TITRE DU CANAL EN VERT DANS LE TABLEAU ==========*/
 function titre_en_vert(id){
+    alert("début")
     let tab_titre = document.getElementById("tab_t"+id);
     tab_titre.style.color = "#9ae69a";
 
@@ -228,6 +230,7 @@ function titre_en_vert(id){
 /*========== MASQUER LE TITRE DU CANAL EN VERT DANS LE TABLEAU ==========*/
 function titre_en_vert_fin(id)
 {
+    alert("fin")
     let tab_titre = document.getElementById("tab_t"+id);
     tab_titre.style.color = "white";
 }

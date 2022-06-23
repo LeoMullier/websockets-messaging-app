@@ -4,45 +4,38 @@
 //                                                                                                      //
 // Nom du fichier : ContenuLogin.jsx                                                                    //
 // Description : Script JS pour afficher le contenu lorsqu'on est sur la phase de login                 //
-// Date de dernière mise à jour : 11/06/2022                                                            //
+// Date de dernière mise à jour : 22/06/2022                                                            //
 // ==================================================================================================== //
 
 
 // Importations
 import React from 'react';
 import axios from 'axios';
-import parse from "html-react-parser";
-import { ContenuAccueil } from '.';
+import ReactHtmlParser from 'react-html-parser';
+import scriptJS from "./script.jsx";
 
 
 // Classe principale
-export default class ContenutAccueil extends React.Component{
+export default class ContenuAccueil extends React.Component{
 	// Constructeur et états
 	constructor(props) 
 	{
 		super(props);
 		this.state = 
 		{
-			PlisteCanaux: '',
-			PlisteProprio: [],
-			Pliste3Invites: [],
-			Phtml: '',
-			IlisteCanaux: '',
-			IlisteProprio: [],
-			Iliste3Invites: [],
-			Ihtml: '',
-
-			login: '',
-			admin: '',
-			enligne: '',
-			nbcanaux: ''
+			lignesTableauTous: ''
 		};
 	}
-	
 
-	// Envoi de la requête
+
+	// Méthode à l'ouverture du composant
 	async componentDidMount() 
 	{
+		// Test de l'importation des fonctions JS
+		var objJS = new scriptJS();
+    	//objJS.tester();
+		
+
 		// Lecture du cookie d'authentification (partie idClient)
 		let name = "idClient" + "=";
 		let decodedCookie = decodeURIComponent(document.cookie);
@@ -94,19 +87,12 @@ export default class ContenutAccueil extends React.Component{
 
 
 		// Initialisations
-		var PlisteCanaux = ""
-		var PlisteProprio = []
-		var Pliste3Invites = []
-		var Phtml = ""
-		var IlisteCanaux = ""
-		var IlisteProprio = []
-		var Iliste3Invites = []
-		var Ihtml = ""
+		
 
 
 		// Requête pour récupérer les infos utilisateurs à afficher		
 		var json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-		var res = await axios.post('http://localhost:8080/user/contenu_accueil/canalproprio', json, {
+		var res = await axios.post('http://localhost:8080/user/contenu_accueil/canauxtous', json, {
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -122,79 +108,34 @@ export default class ContenutAccueil extends React.Component{
 			// Actions à réaliser pour une réponse négative
 			window.location.assign("/bienvenue")
 		} else {
-			//this.setState({ PlisteCanaux: data})
-			PlisteCanaux = data
-			console.log(data)
-			//alert(this.state.PlisteCanaux[0].id)
+			this.setState({ lignesTableauTous: data.l0})
+			//PlisteCanaux = data
+			//console.log("data : " + data)
+			alert(this.state.lignesTableauTous)
 		}
 
-
-		// Pour chacun des canaux sur lesquels l'utilisateur est propriétaire
-		for(let i = 0; i < PlisteCanaux.length; ++i)
-		{
-			console.log("i:" + i);
-			// Requête pour récupérer l'utilisateur proprio de chaque canal à afficher	
-			(async function () {
-				console.log(PlisteCanaux[i])  	
-				json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-				res = await axios.post('http://localhost:8080/user/contenu_accueil/userproprio/'+PlisteCanaux[i].id, json, {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				})
-				.then((res) => {
-					// Réception de la réponse du serveur
-					localStorage.setItem("dataReq", JSON.stringify(res.data));
-					data = JSON.parse(localStorage.getItem("dataReq"));
-					if (data == "" || data.status != "valide")
-					{
-						// Actions à réaliser pour une réponse négative
-						window.location.assign("/bienvenue")
-					} else {
-						//this.state.PlisteProprio[i] = data.})
-						console.log("proprio:", i, data.l0, data.l1)
-						//console.log(data)
-						//alert(this.state.PlisteCanaux[0].id
+		const script = document.createElement("script");
+		script.src = "/js/script.js";
+		script.async = true;
+		document.body.appendChild(script);
+	}
 
 
-						
-					}
-				});
-			})();
-
-
-			// Requête pour récupérer 3 utilisateurs invités à afficher	pour chaque canal	
-			(async function () {
-				json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-				res = await axios.post('http://localhost:8080/user/contenu_accueil/usersinvites/'+PlisteCanaux[i].id, json, {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				})
-				.then((res) => {
-					// Réception de la réponse du serveur
-					localStorage.setItem("dataReq", JSON.stringify(res.data));
-				});
-					
-				data = JSON.parse(localStorage.getItem("dataReq"));
-				if (data == "" || data.status != "valide")
-				{
-					// Actions à réaliser pour une réponse négative
-					window.location.assign("/bienvenue")
-				} else {
-					console.log("invites:" + i)
-					console.log(data)
-					let calcul = 1000+ PlisteCanaux[i].id
-					Phtml = Phmtl + "<tr id='tab_l" + calcul + "'><td style='border :'0px 1px 0px 0px dimgrey solid''>16</td><td class='cellule_description' style={{border: '0px 1px 0px 0px dimgrey solid'}}><strong><span id='tab_t" + calcul + "'>"+  PlisteCanaux[i].titre + "</span><br />" + PlisteCanaux[i] + "</strong>, " + "ivites" + "</td><td>28/03/2022</td></tr>}"
-				}
-			})();
-		}
-		this.setState({ Phtml: Phtml})
+	// Méthode à la fermeture du composant
+	async componentWillUnmount() 
+	{
+		
 	}
 
 
 	// Fonction de render  
 	render() {
+		// Test de l'importation des fonctions JS
+		var objJS = new scriptJS();
+    	//objJS.tester();
+
+
+		// Portion du code HTML retournée
 		return (
 			<div className="contenulogin">
 				<main id="corps">
@@ -214,16 +155,16 @@ export default class ContenutAccueil extends React.Component{
 						<p class="texte">
 							Vous vous trouvez actuellement sur votre espace principal de messagerie UTC. Nous vous présentons ci-dessous la liste des canaux auxquels vous participez, que ce soit ceux que vous avez créés ou ceux pour lesquels vous êtes invité. Cliquez simplement sur le canal de votre choix pour y entrer.
 						</p>
-						<table id="example" class="table table-striped" style={{width: 5 + '%'}}>
+						<table class="table table-striped" id="example" style={{width: 100 + '%'}}>
 						<thead>
 								<tr>
-									<th style={{width: '50px'}}>n°</th>
+									<th style={{width: 100 + 'px'}}>n°</th>
 									<th>Description</th>
-									<th style={{width: '200px'}}>Date de création</th>
+									<th style={{width: 200 + 'px'}}>Date de création</th>
 								</tr>
 							</thead>
 							<tbody>
-								{parse(this.state.Phtml)}
+								{ReactHtmlParser(this.state.lignesTableauTous)}
 							</tbody>
 						</table>
 					</article>
