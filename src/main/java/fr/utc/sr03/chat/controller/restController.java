@@ -135,14 +135,20 @@ public class restController
             List<Canal> canauxProprioTrouves = canalRepository.findByUserproprio(tokenEntrant.getIdClient());
             List<Invites> canauxInvitesTrouves = invitesRepository.findByIduser(tokenEntrant.getIdClient());
             int nbCanauxProprio = canauxProprioTrouves.size();
+            int nbCanauxProprio2 = nbCanauxProprio;
             int nbCanauxInvites = canauxInvitesTrouves.size();
-            int nbCanauxTous = nbCanauxProprio + nbCanauxInvites;
+            int nbCanauxInvites2 = nbCanauxInvites;
+            //int nbCanauxTous = nbCanauxProprio + nbCanauxInvites;
             System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - " + nbCanauxProprio + " canaux propriétaires trouvés.");
             System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - " + nbCanauxInvites + " canaux invités trouvés.");
 
             String[][] lignesTableau = new String[100][5];
 
-            String codeHtml = "";
+            // Chaîne de caratères finale
+            String codeHtmlProprio = "";
+            String codeHtmlInvite = "";
+
+            // Recherche de canaux propriétaires
             int i = 0;
             while (nbCanauxProprio > 0) {
                 System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + i + "e canal propriétaire.");
@@ -173,7 +179,7 @@ public class restController
                     System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + j + "e invité pour le canal " + i + ".");
                     if (j < 3) {
                         List<User> userInvites = userRepository.findByIdAndDesactive(invitesTrouves.get(j).getIduser(), 0);
-                        System.out.println("(*) taille" + userInvites.size());
+                        //System.out.println("(*) taille" + userInvites.size());
                         if (userInvites.size() <= 0) {
                             invites[j] = "";
                             System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal " + i + " : " + invites[j] + ".");
@@ -190,14 +196,21 @@ public class restController
                 }
                 String invitesTotal = "";
                 for (int k = 0; k < 4; k++) {
-                    invitesTotal = invitesTotal + ", " + invites[k];
-                    System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                    if (invites[k] != "") {
+                        if (k == 3) {
+                            invitesTotal = invitesTotal + ", ...";
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                        } else {
+                            invitesTotal = invitesTotal + ", " + invites[k];
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                        }
+                    }
                 }
                 lignesTableau[i][3] = invitesTotal;
                 System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Utilisateurs invités du " + i + "e canal propriétaire : " + lignesTableau[i][3] + ".");
 
                 // Récupération de la date de création du canal
-                lignesTableau[i][4] = canauxProprioTrouves.get(i).getDate();
+                lignesTableau[i][4] = canauxProprioTrouves.get(i).getDate().split(" ")[0];
                 System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Date de création du " + i + "e canal propriétaire : " + lignesTableau[i][4] + ".");
 
                 // Condition d'arrêt de la boucle
@@ -207,10 +220,9 @@ public class restController
 
             // Construction de la portion HTML des lignes du tableau
             System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Construction de la portion HTML des lignes du tableau");
-            System.out.println("(*) ligne1: " + lignesTableau[0][0]);
             int position = 0;
-            while (nbCanauxTous > 0) {
-                codeHtml = codeHtml + "<tr id='tab_l" + lignesTableau[position][0] + "' onMouseEnter={() => {objJS.titre_en_vert(" + lignesTableau[position][0] + ")}} onMouseLeave={() => {objJS.titre_en_vert_fin(" + lignesTableau[position][0] + ")}}>" +
+            while (nbCanauxProprio2 > 0) {
+                codeHtmlProprio = codeHtmlProprio + "<tr id='tab_l" + lignesTableau[position][0] + "' onMouseEnter='titre_en_vert(" + lignesTableau[position][0]                      + ")' onMouseLeave='titre_en_vert_fin(" + lignesTableau[position][0] + ")' onClick=\"window.location.assign('canal?id=" + lignesTableau[position][0] + "')\">" +
                                             "<td style='border-right: 1px dimgrey solid;'>" +
                                                 lignesTableau[position][0] +
                                             "</td>" +
@@ -229,180 +241,118 @@ public class restController
                                             "</td>" +
                                         "</tr>";
                 position++;
-                nbCanauxTous--;
+                nbCanauxProprio2--;
             }
 
+            // Recherche de canaux invités
+            i = 0;
+            while (nbCanauxInvites > 0) {
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + i + "e canal invité.");
 
-            System.out.println("(*) html final : " + codeHtml);
+                //Récupération de l'identifiant du canal
+                lignesTableau[i][0] = Long.toString(canauxInvitesTrouves.get(i).getIdcanal());
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Identifiant du " + i + "e canal invité : " + lignesTableau[i][0] + ".");
 
+                //Récupération du titre du canal
+                Optional<Canal> canalInvite = canalRepository.findById(canauxInvitesTrouves.get(i).getIdcanal());
+                Canal canalInviteActuel = canalInvite.get();
+
+                lignesTableau[i][1] = canalInviteActuel.getTitre();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Titre du " + i + "e canal invité : " + lignesTableau[i][1] + ".");
+
+                //Récupération de l'utilisateur invité du canal
+                List<User> userProprioTrouve = userRepository.findByIdAndDesactive(canalInviteActuel.getUserproprio(), 0);
+                lignesTableau[i][2] = userProprioTrouve.get(0).getPrenom() + " " + userProprioTrouve.get(0).getNom();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Utilisateur invité du " + i + "e canal invité : " + lignesTableau[i][2] + ".");
+
+                //Récupération de 3 utilisateurs invités du canal
+                String[] invites = {"", "", "", ""};
+                List<Invites> invitesTrouves = invitesRepository.findByIdcanal(canalInviteActuel.getId());
+                int nbUserInvites = invitesTrouves.size();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Nombres d'invités du " + i + "e canal invité : " + nbUserInvites + ".");
+                if (nbUserInvites > 4) {
+                    nbUserInvites = 4;
+                }
+                int j = 0;
+                while (nbUserInvites > 0) {
+                    System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + j + "e invité pour le canal " + i + ".");
+                    if (j < 3) {
+                        List<User> userInvites = userRepository.findByIdAndDesactive(invitesTrouves.get(j).getIduser(), 0);
+                        //System.out.println("(*) taille" + userInvites.size());
+                        if (userInvites.size() <= 0) {
+                            invites[j] = "";
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal " + i + " : " + invites[j] + ".");
+                        } else {
+                            invites[j] = userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom();
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal " + i + " : " + invites[j] + ".");
+                        }
+                    } else {
+                        invites[j] = "...";
+                        System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Fin de la chaine des invités avec : " + invites[j] + ".");
+                    }
+                    j++;
+                    nbUserInvites--;
+                }
+                String invitesTotal = "";
+                for (int k = 0; k < 4; k++) {
+                    if (invites[k] != "") {
+                        if (k == 3) {
+                            invitesTotal = invitesTotal + ", ...";
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                        } else {
+                            invitesTotal = invitesTotal + ", " + invites[k];
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                        }
+                    }
+                }
+                lignesTableau[i][3] = invitesTotal;
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Utilisateurs invités du " + i + "e canal invité : " + lignesTableau[i][3] + ".");
+
+                // Récupération de la date de création du canal
+                lignesTableau[i][4] = canalInviteActuel.getDate().split(" ")[0];
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Date de création du " + i + "e canal invité : " + lignesTableau[i][4] + ".");
+
+                // Condition d'arrêt de la boucle
+                i++;
+                nbCanauxInvites--;
+            }
+
+            // Construction de la portion HTML des lignes du tableau
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Construction de la portion HTML des lignes du tableau");
+            position = 0;
+            while (nbCanauxInvites2 > 0) {
+                codeHtmlInvite = codeHtmlInvite + "<tr id='tab_l" + lignesTableau[position][0] + "' onMouseEnter='titre_en_vert(" + lignesTableau[position][0]                      + ")' onMouseLeave='titre_en_vert_fin(" + lignesTableau[position][0] + ")' onClick=\"window.location.assign('canal?id='" + lignesTableau[position][0] + "')\">" +
+                        "<td style='border-right: 1px dimgrey solid;'>" +
+                        lignesTableau[position][0] +
+                        "</td>" +
+                        "<td class='cellule_description' style='border-right: 1px dimgrey solid;'>" +
+                        "<strong>" +
+                        "<span id='tab_t" + lignesTableau[position][0] + "'>" +
+                        lignesTableau[position][1] +
+                        "</span>" +
+                        "<br />" +
+                        lignesTableau[position][2] +
+                        "</strong>" +
+                        lignesTableau[position][3] +
+                        "</td>" +
+                        "<td>" +
+                        lignesTableau[position][4] +
+                        "</td>" +
+                        "</tr>";
+                position++;
+                nbCanauxInvites2--;
+            }
+
+            System.out.println(codeHtmlProprio);
             // Envoi des données au React
             System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Retour de la fonction : packet de données contenant le code HTML du tableau affichant tous les canaux de l'utilisateur.");
             Donnees donneesRetour = new Donnees(
-                    codeHtml,
+                    codeHtmlProprio,
+                    codeHtmlInvite,
                     "",
                     "",
                     "",
                     "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "valide");
-            return donneesRetour;
-        }
-    }
-
-
-    // ContenuAccueilA - Transmettre la liste des canaux pour affichage
-    @PostMapping(value = "/contenu_accueil/canalproprio", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Canal> ContenuAccueilA(@RequestBody Token tokenEntrant, HttpServletRequest request)
-    {
-        // Initialisations
-        String ipClient = request.getRemoteAddr();
-        System.out.println(" ");
-        System.out.println("(!) USER-ContenuAccueilA - " + ipClient +" - Requête POST entrante sur le chemin /canalproprio.");
-
-        // Vérification de l'authentification avec ip et token
-        System.out.println("(!) USER-ContenuAccueilA - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
-        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
-        {
-            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
-            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
-            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Retour de la fonction : packet de données vide.");
-            return null;
-        } else {
-            // Succès dans le cas où l'authentification est confirmée
-            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - L'utilisateur a bien été authentifié.");
-
-            // Préparation des données à envoyer
-            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
-            List<Canal> canauxProprioTrouves = canalRepository.findByUserproprio(tokenEntrant.getIdClient());
-            List<Invites> canauxInvitesTrouves = invitesRepository.findByIduser(tokenEntrant.getIdClient());
-
-            // Envoi des données au React
-            System.out.println("(!) USER-ContenuAccueilA - " + ipClient + " - Retour de la fonction : packet de données contenant la liste des canaux dont l'utilisateur est propriétaires.");
-            return canauxProprioTrouves;
-        }
-    }
-
-
-    // ContenuAccueilB - Transmettre les informations sur l'utilisateur proprio d'un canal pour affichage
-    @PostMapping(value = "/contenu_accueil/userproprio/{numero}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Donnees ContenuAccueilB(@RequestBody Token tokenEntrant, @PathVariable("numero") String numero, HttpServletRequest request)
-    {
-        // Initialisations
-        String ipClient = request.getRemoteAddr();
-        System.out.println(" ");
-        System.out.println("(!) USER-ContenuAccueilB - " + ipClient +" - Requête POST entrante sur le chemin /userproprio avec numero=" + numero + ".");
-
-        // Vérification de l'authentification avec ip et token
-        System.out.println("(!) USER-ContenuAccueilB - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
-        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
-        {
-            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
-            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
-            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Retour de la fonction : packet de données vide.");
-            Donnees donneesRetour = new Donnees(
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "echec");
-            return donneesRetour;
-        } else {
-            // Succès dans le cas où l'authentification est confirmée
-            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - L'utilisateur a bien été authentifié.");
-
-            // Préparation des données à envoyer
-            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
-            Optional<User> utilisateurProprio = userRepository.findById(Long.valueOf(1));
-            System.out.println("!!!" + utilisateurProprio.isEmpty() + "--"+ Long.valueOf(numero));
-
-            // Envoi des données au React
-            System.out.println("(!) USER-ContenuAccueilB - " + ipClient + " - Retour de la fonction : packet de données contenant nom/prenom de l'utilisateur propriétaire demandé.");
-            Donnees donneesRetour = new Donnees(
-                    String.valueOf(utilisateurProprio.get().getNom()),
-                    String.valueOf(utilisateurProprio.get().getPrenom()),
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "valide");
-            return donneesRetour;
-        }
-    }
-
-
-    // ContenuAccueilC - Transmettre les informations sur 3 utilisateurs invités d'un canal pour affichage
-    @PostMapping(value = "/contenu_accueil/usersinvites/{numero}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Donnees ContenuAccueilC(@RequestBody Token tokenEntrant, @PathVariable("numero") Integer numero, HttpServletRequest request)
-    {
-        // Initialisations
-        String ipClient = request.getRemoteAddr();
-        System.out.println(" ");
-        System.out.println("(!) USER-ContenuAccueilC - " + ipClient +" - Requête POST entrante sur le chemin /userproprio avec numero=" + numero + ".");
-
-        // Vérification de l'authentification avec ip et token
-        System.out.println("(!) USER-ContenuAccueilC - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
-        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
-        {
-            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
-            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
-            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Retour de la fonction : packet de données vide.");
-            Donnees donneesRetour = new Donnees(
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "echec");
-            return donneesRetour;
-        } else {
-            // Succès dans le cas où l'authentification est confirmée
-            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - L'utilisateur a bien été authentifié.");
-
-            // Préparation des données à envoyer
-            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
-            List<Invites> utilisateursInvites = invitesRepository.findByIdcanal(numero);
-            String[] prenoms = new String[]{"", "", ""};
-            String[] noms = new String[]{"", "", ""};
-            int taille = utilisateursInvites.size();
-            int max = 3;
-            int i = 0;
-            while (taille > 0 && max > 0){
-                Optional<User> utilisateurInvite = userRepository.findById(utilisateursInvites.get(i).getIduser());
-                prenoms[i]=utilisateurInvite.get().getPrenom();
-                noms[i]=utilisateurInvite.get().getNom();
-                i++;
-                taille --;
-                max--;
-            }
-
-            // Envoi des données au React
-            System.out.println("(!) USER-ContenuAccueilC - " + ipClient + " - Retour de la fonction : packet de données contenant nom/prenom de l'utilisateur propriétaire demandé.");
-            Donnees donneesRetour = new Donnees(
-                    prenoms[0],
-                    noms[0],
-                    prenoms[1],
-                    noms[1],
-                    prenoms[2],
-                    noms[2],
                     "",
                     "",
                     "",
@@ -468,6 +418,191 @@ public class restController
                     "",
                     "valide");
             return donneesRetour;
+        }
+    }
+
+
+    // BandeauLatCanal - Vérifier la légitimité de l'utilisateur entrant et transmettre les informations sur le canal
+    @PostMapping(value = "/bandeau_lat_canal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnees BandeauLatCanal(@RequestBody Token tokenEntrant, HttpServletRequest request, @RequestParam int id) {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Requête POST entrante sur le chemin /bandeau_lat_canal.");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient()))) {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - L'utilisateur a bien été correctement authentifié.");
+            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Vérification de la légitimité de l'utilisateur à accéder à ce canal.");
+            List<Canal> canauxProprioTrouves = canalRepository.findByIdAndUserproprio(Long.valueOf(id), Long.valueOf(tokenEntrant.getIdClient()));
+            List<Invites> canauxInvitesTrouves = invitesRepository.findByIdcanalAndIduser(Long.valueOf(id), Long.valueOf(tokenEntrant.getIdClient()));
+            if (!(canauxProprioTrouves.size() > 0 || canauxInvitesTrouves.size() > 0)) {
+                System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - L'utilisateur n'a pas le droit d'accéder à ce canal.");
+
+                // Envoi des données au React
+                System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Retour de la fonction : packet de données contenant acces refuse.");
+                Donnees donneesRetour = new Donnees(
+                        "acces refuse",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "valide");
+                return donneesRetour;
+            } else {
+                if (canauxProprioTrouves.size() > 0) {
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - L'utilisateur a bien le droit d'accéder à ce canal puisqu'il en est le propriétaire.");
+
+                    // Récupération du titre du canal
+                    String titreCanal = canauxProprioTrouves.get(0).getTitre();
+
+                    // Récupération de la description du canal
+                    String descriptionCanal = canauxProprioTrouves.get(0).getDescription();
+
+                    // Récupération de la date du canal
+                    String dateCanal = canauxProprioTrouves.get(0).getDate().split(" ")[0];
+
+                    // Récupération de la liste d'utilisateurs du canal
+                    List<User> userProprio = userRepository.findByIdAndDesactive(canauxProprioTrouves.get(0).getUserproprio(), 0);
+                    String utilisateursCanal = "";
+                    utilisateursCanal = utilisateursCanal + "<tr onmouseenter='afficher_enligne_oui(1000)' onmouseleave=\"masquer_enligne(1000,'" + userProprio.get(0).getPrenom() + " " + userProprio.get(0).getNom() + "<i>(propriétaire)</i>')\">" +
+                            "<td class='participants_gauche'>" +
+                            "<font color='#33cc33'>●</font>" +
+                            "</td>" +
+                            "<td class='participants_droite' id='participant_n_1000'>" +
+                            userProprio.get(0).getPrenom() + " " + userProprio.get(0).getNom() + "<i>(propriétaire)</i>" +
+                            "</td>" +
+                            "</tr>";
+                    List<Invites> invitesTrouves = invitesRepository.findByIdcanal(id);
+                    int nbUserInvites = invitesTrouves.size();
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Nombres d'invités trouvés pour ce canal : " + nbUserInvites + ".");
+
+                    int j = 0;
+                    while (nbUserInvites > 0) {
+                        System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Traitement du " + j + "e invité pour le canal.");
+                        List<User> userInvites = userRepository.findByIdAndDesactive(invitesTrouves.get(j).getIduser(), 0);
+                        //System.out.println("(*) taille" + userInvites.size());
+                        if (userInvites.size() <= 0) {
+                            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal : " + utilisateursCanal + ".");
+                        } else {
+                            utilisateursCanal = utilisateursCanal + "<tr onmouseenter='afficher_enligne_oui(1000)' onmouseleave=\"masquer_enligne(1000,'" + userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom() + "')\">" +
+                                    "<td class='participants_gauche'>" +
+                                    "<font color='#33cc33'>●</font>" +
+                                    "</td>" +
+                                    "<td class='participants_droite' id='participant_n_1000'>" +
+                                    userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom() +
+                                    "</td>" +
+                                    "</tr>";
+                            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal : " + utilisateursCanal + ".");
+                        }
+                        j++;
+                        nbUserInvites--;
+                    }
+
+                    // Envoi des données au React
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Retour de la fonction : packet de données contenant acces valide et les infos du canal.");
+                    Donnees donneesRetour = new Donnees(
+                            "acces valide",
+                            titreCanal,
+                            descriptionCanal,
+                            dateCanal,
+                            utilisateursCanal,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "valide");
+                    return donneesRetour;
+                } else {
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - L'utilisateur a bien le droit d'accéder à ce canal puisqu'il y est invité.");
+
+                    // Récupération du titre du canal
+                    String titreCanal = canauxProprioTrouves.get(0).getTitre();
+
+                    // Récupération de la description du canal
+                    String descriptionCanal = canauxProprioTrouves.get(0).getDescription();
+
+                    // Récupération de la date du canal
+                    String dateCanal = canauxProprioTrouves.get(0).getDate().split(" ")[0];
+
+                    // Récupération de la liste d'utilisateurs du canal
+                    List<User> userProprio = userRepository.findByIdAndDesactive(canauxProprioTrouves.get(0).getUserproprio(), 0);
+                    String utilisateursCanal = "";
+                    utilisateursCanal = utilisateursCanal + "<tr onmouseenter='afficher_enligne_oui(1000)' onmouseleave=\"masquer_enligne(1000,'" + userProprio.get(0).getPrenom() + " " + userProprio.get(0).getNom() + "<i>(propriétaire)</i>')\">" +
+                            "<td class='participants_gauche'>" +
+                            "<font color='#33cc33'>●</font>" +
+                            "</td>" +
+                            "<td class='participants_droite' id='participant_n_1000'>" +
+                            userProprio.get(0).getPrenom() + " " + userProprio.get(0).getNom() + "<i>(propriétaire)</i>" +
+                            "</td>" +
+                            "</tr>";
+                    List<Invites> invitesTrouves = invitesRepository.findByIdcanal(id);
+                    int nbUserInvites = invitesTrouves.size();
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Nombres d'invités trouvés pour ce canal : " + nbUserInvites + ".");
+
+                    int j = 0;
+                    while (nbUserInvites > 0) {
+                        System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Traitement du " + j + "e invité pour le canal.");
+                        List<User> userInvites = userRepository.findByIdAndDesactive(invitesTrouves.get(j).getIduser(), 0);
+                        //System.out.println("(*) taille" + userInvites.size());
+                        if (userInvites.size() <= 0) {
+                            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal : " + utilisateursCanal + ".");
+                        } else {
+                            utilisateursCanal = utilisateursCanal + "<tr onmouseenter='afficher_enligne_oui(1000)' onmouseleave=\"masquer_enligne(1000,'" + userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom() + "')\">" +
+                                    "<td class='participants_gauche'>" +
+                                    "<font color='#33cc33'>●</font>" +
+                                    "</td>" +
+                                    "<td class='participants_droite' id='participant_n_1000'>" +
+                                    userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom() +
+                                    "</td>" +
+                                    "</tr>";
+                            System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal : " + utilisateursCanal + ".");
+                        }
+                        j++;
+                        nbUserInvites--;
+                    }
+
+                    // Envoi des données au React
+                    System.out.println("(!) USER-BandeauLatCanal - " + ipClient + " - Retour de la fonction : packet de données contenant acces valide et les infos du canal.");
+                    Donnees donneesRetour = new Donnees(
+                            "acces valide",
+                            titreCanal,
+                            dateCanal,
+                            descriptionCanal,
+                            utilisateursCanal,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "valide");
+                    return donneesRetour;
+                }
+            }
         }
     }
 }
