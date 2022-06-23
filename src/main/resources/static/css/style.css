@@ -301,6 +301,20 @@ td{
 
 
 .even:hover{
+	background: green;
+}
+
+
+.odd{
+	height: 75px;
+	background-color: transparent;
+	font-family: Light;
+	font-size: 14pt;
+	cursor: pointer;
+}
+
+
+.odd:hover{
 	background: #484a4c;
 }
 

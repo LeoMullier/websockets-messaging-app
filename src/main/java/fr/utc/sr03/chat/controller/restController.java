@@ -97,6 +97,163 @@ public class restController
     }
 
 
+    // ContenuAccueilTous - Transmettre le code HTML du tableau affichant tous les canaux
+    @PostMapping(value = "/contenu_accueil/canauxtous", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnees ContenuAccueilTous(@RequestBody Token tokenEntrant, HttpServletRequest request)
+    {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuAccueilTous - " + ipClient +" - Requête POST entrante sur le chemin /canauxtous.");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-ContenuAccueilTous - " + ipClient +" - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient())))
+        {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            // Succès dans le cas où l'authentification est confirmée
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - L'utilisateur a bien été authentifié.");
+
+            // Préparation des données à envoyer
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Récupération, calcul et préparation des données à envoyer.");
+            List<Canal> canauxProprioTrouves = canalRepository.findByUserproprio(tokenEntrant.getIdClient());
+            List<Invites> canauxInvitesTrouves = invitesRepository.findByIduser(tokenEntrant.getIdClient());
+            int nbCanauxProprio = canauxProprioTrouves.size();
+            int nbCanauxInvites = canauxInvitesTrouves.size();
+            int nbCanauxTous = nbCanauxProprio + nbCanauxInvites;
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - " + nbCanauxProprio + " canaux propriétaires trouvés.");
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - " + nbCanauxInvites + " canaux invités trouvés.");
+
+            String[][] lignesTableau = new String[100][5];
+
+            String codeHtml = "";
+            int i = 0;
+            while (nbCanauxProprio > 0) {
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + i + "e canal propriétaire.");
+
+                //Récupération de l'identifiant du canal
+                lignesTableau[i][0] = Long.toString(canauxProprioTrouves.get(i).getId());
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Identifiant du " + i + "e canal propriétaire : " + lignesTableau[i][0] + ".");
+
+                //Récupération du titre du canal
+                lignesTableau[i][1] = canauxProprioTrouves.get(i).getTitre();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Titre du " + i + "e canal propriétaire : " + lignesTableau[i][1] + ".");
+
+                //Récupération de l'utilisateur propriétaire du canal
+                List<User> userProprioTrouve = userRepository.findByIdAndDesactive(canauxProprioTrouves.get(i).getUserproprio(), 0);
+                lignesTableau[i][2] = userProprioTrouve.get(0).getPrenom() + " " + userProprioTrouve.get(0).getNom();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Utilisateur propriétaire du " + i + "e canal propriétaire : " + lignesTableau[i][2] + ".");
+
+                //Récupération de 3 utilisateurs invités du canal
+                String[] invites = {"", "", "", ""};
+                List<Invites> invitesTrouves = invitesRepository.findByIdcanal(canauxProprioTrouves.get(i).getId());
+                int nbUserInvites = invitesTrouves.size();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Nombres d'invités du " + i + "e canal propriétaire : " + nbUserInvites + ".");
+                if (nbUserInvites > 4) {
+                    nbUserInvites = 4;
+                }
+                int j = 0;
+                while (nbUserInvites > 0) {
+                    System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Traitement du " + j + "e invité pour le canal " + i + ".");
+                    if (j < 3) {
+                        List<User> userInvites = userRepository.findByIdAndDesactive(invitesTrouves.get(j).getIduser(), 0);
+                        System.out.println("(*) taille" + userInvites.size());
+                        if (userInvites.size() <= 0) {
+                            invites[j] = "";
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal " + i + " : " + invites[j] + ".");
+                        } else {
+                            invites[j] = userInvites.get(0).getPrenom() + " " + userInvites.get(0).getNom();
+                            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Prénom et nom du " + j + "e invité pour le canal " + i + " : " + invites[j] + ".");
+                        }
+                    } else {
+                        invites[j] = "...";
+                        System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Fin de la chaine des invités avec : " + invites[j] + ".");
+                    }
+                    j++;
+                    nbUserInvites--;
+                }
+                String invitesTotal = "";
+                for (int k = 0; k < 4; k++) {
+                    invitesTotal = invitesTotal + ", " + invites[k];
+                    System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Composition de la chaine totale des invités : " + invitesTotal + ".");
+                }
+                lignesTableau[i][3] = invitesTotal;
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Utilisateurs invités du " + i + "e canal propriétaire : " + lignesTableau[i][3] + ".");
+
+                // Récupération de la date de création du canal
+                lignesTableau[i][4] = canauxProprioTrouves.get(i).getDate();
+                System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Date de création du " + i + "e canal propriétaire : " + lignesTableau[i][4] + ".");
+
+                // Condition d'arrêt de la boucle
+                i++;
+                nbCanauxProprio--;
+            }
+
+            // Construction de la portion HTML des lignes du tableau
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Construction de la portion HTML des lignes du tableau");
+            System.out.println("(*) ligne1: " + lignesTableau[0][0]);
+            int position = 0;
+            while (nbCanauxTous > 0) {
+                codeHtml = codeHtml + "<tr id='tab_l" + lignesTableau[position][0] + "' onMouseEnter={() => {objJS.titre_en_vert(" + lignesTableau[position][0] + ")}} onMouseLeave={() => {objJS.titre_en_vert_fin(" + lignesTableau[position][0] + ")}}>" +
+                                            "<td style='border-right: 1px dimgrey solid;'>" +
+                                                lignesTableau[position][0] +
+                                            "</td>" +
+                                            "<td class='cellule_description' style='border-right: 1px dimgrey solid;'>" +
+                                                "<strong>" +
+                                                    "<span id='tab_t" + lignesTableau[position][0] + "'>" +
+                                                        lignesTableau[position][1] +
+                                                    "</span>" +
+                                                    "<br />" +
+                                                    lignesTableau[position][2] +
+                                                "</strong>" +
+                                                lignesTableau[position][3] +
+                                            "</td>" +
+                                            "<td>" +
+                                                lignesTableau[position][4] +
+                                            "</td>" +
+                                        "</tr>";
+                position++;
+                nbCanauxTous--;
+            }
+
+
+            System.out.println("(*) html final : " + codeHtml);
+
+            // Envoi des données au React
+            System.out.println("(!) USER-ContenuAccueilTous - " + ipClient + " - Retour de la fonction : packet de données contenant le code HTML du tableau affichant tous les canaux de l'utilisateur.");
+            Donnees donneesRetour = new Donnees(
+                    codeHtml,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "valide");
+            return donneesRetour;
+        }
+    }
+
+
     // ContenuAccueilA - Transmettre la liste des canaux pour affichage
     @PostMapping(value = "/contenu_accueil/canalproprio", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Canal> ContenuAccueilA(@RequestBody Token tokenEntrant, HttpServletRequest request)
