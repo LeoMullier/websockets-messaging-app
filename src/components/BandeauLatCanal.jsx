@@ -2,8 +2,8 @@
 // Projet : Utilitaire Textuel de Communication                                                         //
 // Auteurs : Bastian COSSON, Léo MULLIER, Cédric Martinet                                               //
 //                                                                                                      //
-// Nom du fichier : ContenuLogin.jsx                                                                    //
-// Description : Script JS pour afficher le contenu lorsqu'on est sur la phase de login                 //
+// Nom du fichier : BandeauLatCanal.jsx                                                                 //
+// Description : Script JS pour afficher le bandeau lattéral lorsqu'on est sur une conversation         //
 // Date de dernière mise à jour : 23/06/2022                                                            //
 // ==================================================================================================== //
 
@@ -17,14 +17,17 @@ import DOMPurify from "dompurify";
 
 
 // Classe principale
-export default class ContenuAccueil extends React.Component{
+export default class BandeauLatCanal extends React.Component{
 	// Constructeur et états
 	constructor(props) 
 	{
 		super(props);
 		this.state = 
 		{
-			lignesTableauTous: '',
+			titre: '',
+			description: '',
+			date: '',
+			participants: '',
 			objJS : new scriptJS()
 		};
 	}
@@ -89,12 +92,13 @@ export default class ContenuAccueil extends React.Component{
 
 
 		// Initialisations
-		
+		const parametres = new URLSearchParams(window.location.search);
+		const idCanal = parametres.get("id");
 
 
-		// Requête pour récupérer les infos utilisateurs à afficher		
-		var json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-		var res = await axios.post('http://localhost:8080/user/contenu_accueil/canauxtous', json, {
+		// Requête pour vérifier la légitimité de l'utilisateur à accéder à ce canal et pour récupérer les infos du canal à afficher		
+		var json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp, idCanal: idCanal });
+		var res = await axios.post('http://localhost:8080/user/bandeau_lat_canal?id=' + idCanal, json, {
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -110,10 +114,10 @@ export default class ContenuAccueil extends React.Component{
 			// Actions à réaliser pour une réponse négative
 			window.location.assign("/bienvenue")
 		} else {
-			this.setState({ lignesTableauTous: data.l0 + data.l1 })
-			//PlisteCanaux = data
-			//console.log("data : " + data)
-			//alert(this.state.lignesTableauTous)
+			this.setState({ titre: data.l1 })
+			this.setState({ description: data.l2 })
+			this.setState({ date: data.l3 })
+			this.setState({ participants: data.l4 })
 		}
 
 		const script = document.createElement("script");
@@ -132,44 +136,34 @@ export default class ContenuAccueil extends React.Component{
 
 	// Fonction de render  
 	render() {
-		// Changement du titre de la page
-		document.title = "UTC - Accueil"
-
 		// Portion du code HTML retournée
 		return (
-			<div className="contenulogin">
-				<main id="corps">
-					<nav>
-						<a href="utilisateur_tous.html">
-							<p class="titre1">
-								Tous mes canaux</p></a>
-						<a href="utilisateur_proprietaires.html">
-							<p class="titre2">
-								Canaux propriétaires</p></a>
-						<a href="utilisateur_invites.html">
-							<p class="titre2">
-								Canaux invités</p></a>
-					</nav>
-
-					<article>
-						<p class="texte">
-							Vous vous trouvez actuellement sur votre espace principal de messagerie UTC. Nous vous présentons ci-dessous la liste des canaux auxquels vous participez, que ce soit ceux que vous avez créés ou ceux pour lesquels vous êtes invité. Cliquez simplement sur le canal de votre choix pour y entrer.
-						</p>
-						<table class="table table-striped" id="example" style={{width: 100 + '%'}}>
-						<thead>
-								<tr>
-									<th style={{width: 100 + 'px'}}>n°</th>
-									<th>Description</th>
-									<th style={{width: 200 + 'px'}}>Date de création</th>
-								</tr>
-							</thead>
-							<tbody dangerouslySetInnerHTML={{__html: this.state.lignesTableauTous}}>
-								
-							</tbody>
-						</table>
-					</article>
-				</main>
-			</div>
+			<aside id="panneau">
+				<div class="panneau_corps">
+					<br />
+					<span class="titre1 centrer">
+						{this.state.titre}
+					</span>
+					<br />
+					{this.state.description} Ce canal a été ouvert le {this.state.date}.
+					<br />
+					<br />
+					<br />
+					<span class="titre2 centrer">
+						Participants
+					</span>
+					<table class="sans_curseur" border="0" cellspacing="0" cellpadding="0" width="100%" dangerouslySetInnerHTML={{__html:this.state.participants}}>
+						
+					</table>
+				</div>
+				
+				<footer class="panneau_pied">
+					<p>
+						&lt;/&gt; Développé pour SR03 en P2022 par
+						<br />Bastian Cosson, Léo Mullier, Cédric Martinet
+					</p>
+				</footer>
+			</aside>
 		);
 	}
 }

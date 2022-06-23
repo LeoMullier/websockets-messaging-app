@@ -2,8 +2,8 @@
 // Projet : Utilitaire Textuel de Communication                                                         //
 // Auteurs : Bastian COSSON, Léo MULLIER, Cédric Martinet                                               //
 //                                                                                                      //
-// Nom du fichier : ContenuLogin.jsx                                                                    //
-// Description : Script JS pour afficher le contenu lorsqu'on est sur la phase de login                 //
+// Nom du fichier : ContenuCanal.jsx                                                                    //
+// Description : Script JS pour afficher le contenu lorsqu'on est sur la phase de canal                 //
 // Date de dernière mise à jour : 23/06/2022                                                            //
 // ==================================================================================================== //
 
@@ -17,14 +17,16 @@ import DOMPurify from "dompurify";
 
 
 // Classe principale
-export default class ContenuAccueil extends React.Component{
+export default class ContenuCanal extends React.Component{
 	// Constructeur et états
 	constructor(props) 
 	{
 		super(props);
 		this.state = 
 		{
-			lignesTableauTous: '',
+			titre: '',
+			description: '',
+			participants: '',
 			objJS : new scriptJS()
 		};
 	}
@@ -89,32 +91,12 @@ export default class ContenuAccueil extends React.Component{
 
 
 		// Initialisations
+		const parametres = new URLSearchParams(window.location.search);
+		const idCanal = parametres.get("id");
+
+
+		// Requête pour vérifier la légitimité de l'utilisateur à accéder à ce canal et pour récupérer les infos du canal à afficher		
 		
-
-
-		// Requête pour récupérer les infos utilisateurs à afficher		
-		var json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-		var res = await axios.post('http://localhost:8080/user/contenu_accueil/canauxtous', json, {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		.then((res) => {
-			// Réception de la réponse du serveur
-			localStorage.setItem("dataReq", JSON.stringify(res.data));
-		});
-			
-		let data = JSON.parse(localStorage.getItem("dataReq"));
-		if (data == "")
-		{
-			// Actions à réaliser pour une réponse négative
-			window.location.assign("/bienvenue")
-		} else {
-			this.setState({ lignesTableauTous: data.l0 + data.l1 })
-			//PlisteCanaux = data
-			//console.log("data : " + data)
-			//alert(this.state.lignesTableauTous)
-		}
 
 		const script = document.createElement("script");
 		script.src = "/js/script.js";
@@ -133,41 +115,75 @@ export default class ContenuAccueil extends React.Component{
 	// Fonction de render  
 	render() {
 		// Changement du titre de la page
-		document.title = "UTC - Accueil"
+		document.title = "UTC - Conversation"
+		alert("contenu canal")
 
 		// Portion du code HTML retournée
 		return (
 			<div className="contenulogin">
 				<main id="corps">
-					<nav>
-						<a href="utilisateur_tous.html">
-							<p class="titre1">
-								Tous mes canaux</p></a>
-						<a href="utilisateur_proprietaires.html">
-							<p class="titre2">
-								Canaux propriétaires</p></a>
-						<a href="utilisateur_invites.html">
-							<p class="titre2">
-								Canaux invités</p></a>
-					</nav>
-
-					<article>
-						<p class="texte">
-							Vous vous trouvez actuellement sur votre espace principal de messagerie UTC. Nous vous présentons ci-dessous la liste des canaux auxquels vous participez, que ce soit ceux que vous avez créés ou ceux pour lesquels vous êtes invité. Cliquez simplement sur le canal de votre choix pour y entrer.
+					<div id="conversation">
+						<p class="message_infos_droite">
+							<b>Moi</b> 10:54
 						</p>
-						<table class="table table-striped" id="example" style={{width: 100 + '%'}}>
-						<thead>
-								<tr>
-									<th style={{width: 100 + 'px'}}>n°</th>
-									<th>Description</th>
-									<th style={{width: 200 + 'px'}}>Date de création</th>
-								</tr>
-							</thead>
-							<tbody dangerouslySetInnerHTML={{__html: this.state.lignesTableauTous}}>
-								
-							</tbody>
-						</table>
-					</article>
+						<div class="message_droite">Salut c'est moi</div>
+
+						<p class="message_infos_gauche">
+							<b>Benjamin</b> 10:56
+						</p>
+						<div class="message_gauche">Salut Léo, comment vas-tu ?</div>
+						
+						<p class="message_infos_droite">
+							<b>Moi</b> 11h00
+						</p>
+						<div class="message_droite">Plutôt bien et toi ? Quoi de neuf</div>
+						
+						<p class="message_infos_gauche">
+							<b>Benjamin</b> 11h03
+						</p>
+						<div class="message_gauche">Super bien, on avance dans nos projets perso</div>
+						
+						<p class="message_infos_droite">
+							<b>Moi</b> 11h04
+						</p>
+						<div class="message_droite">Trop bien, je viens de finir le projet de SR03, ça rend bien notre interface</div>
+						
+						<div class="message_droite">Et en plus on a fait un jeu de mot avec "UTC" 😅</div>
+						
+						<div class="message_droite">Qu'en penses tu ?</div>
+
+						<p class="message_infos_gauche">
+							<b>Benjamin</b> 12:54
+						</p>
+						<div class="message_gauche">Ah oui en effet bien joué!</div>
+						
+						<p class="message_infos_gauche">
+							<b>Noé</b> 12:59
+						</p>
+						<div class="message_gauche">Bonjour les amis, je suis ravi de vous retrouver</div>
+						
+						<p class="message_infos_droite">
+							<b>Moi</b> 12:59
+						</p>
+						<div class="message_droite">Moi aussi, comment vas-tu de si bon matin ?</div>
+						
+						<p class="message_infos_gauche">
+							<b>Noé</b> 12:59
+						</p>
+						<div class="message_gauche">Parfaitement bien, merci et toi?</div>
+						
+						<p class="message_infos_gauche">
+							<b>Justine</b> 14:28
+						</p>
+						<div class="message_gauche">Hello tout le monde, je suis nouveau ici</div>
+						
+						<p class="message_infos_droite">
+							<b>Moi</b> maintenant
+						</p>
+						<div id="message_saisie">
+							<div class="message_saisie_bulle" id="message_saisie_bulle" contenteditable="true" ></div>
+						</div>
+					</div>
 				</main>
 			</div>
 		);

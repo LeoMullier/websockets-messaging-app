@@ -17,7 +17,7 @@ import scriptJS from "./script.jsx";
 
 
 // Classe principale
-export default class BarreSupAccueil extends React.Component{
+export default class BarreSupCanal extends React.Component{
 	// Constructeur et états
 	constructor(props) 
 	{
@@ -51,15 +51,15 @@ export default class BarreSupAccueil extends React.Component{
 		return (
 			<div className="barresuplogin">
 				<header>
-					<div class="entete" id="entete" onClick={() => {objJS.deconnecter_utilisateur()}} onMouseEnter={() => {objJS.afficher_retour_login()}} onMouseLeave={() => {objJS.masquer_retour_login()}}>
+					<div class="entete" id="entete" onClick={() => {window.location.assign('accueil')}} onMouseEnter={() => {objJS.afficher_retour_tmc()}} onMouseLeave={() => {objJS.masquer_retour_tmc()}}>
 						<img class="entete_image" id="entete_image" src="img/logo.png"/>
 						<p class="entete_titre" id="entete_titre">
 							UTC - Utilitaire Textuel pour la Communication
 						</p>
 					</div>
 					<div class="entete_action">
-						<div class="entete_action_texte" onClick={() => {objJS.changer_panneau()}}>Mon profil</div>
-						<img class="entete_action_image" src="img/utilisateur.png" onClick={() => {objJS.changer_panneau()}}/>
+						<div class="entete_action_texte" onClick={() => {objJS.changer_panneau()}}>À propos du canal</div>
+						<img class="entete_action_image" src="img/canal.png" onClick={() => {objJS.changer_panneau()}}/>
 					</div>
 				</header>
 			</div>
