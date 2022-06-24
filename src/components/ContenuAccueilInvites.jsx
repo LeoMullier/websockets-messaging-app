@@ -175,6 +175,10 @@ export default class ContenuAccueilInvites extends React.Component{
 								
 							</tbody>
 						</table>
+						<div class="action_div">
+							<img class="action_img" src="/img/ajouter.png" onClick={() => window.location.assign('../nouveau-canal')} />
+							<span class="action_span" style={{color: 'white'}} onClick={() => window.location.assign('../nouveau-canal')}>Créer une nouvelle conversation</span>
+						</div>
 					</article>
 				</main>
 			</div>

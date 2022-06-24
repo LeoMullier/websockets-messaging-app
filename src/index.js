@@ -30,6 +30,7 @@ import {
 	ContenuAccueil,
 	ContenuAccueilProprio,
 	ContenuAccueilInvites,
+	ContenuCreerCanal,
 	ContenuCanal,
 } from "./components";
 
@@ -51,6 +52,7 @@ ReactDOM.render(
 			<Route exact path="/accueil" element={<BarreSupAccueil />} />
 			<Route exact path="/accueil/proprio" element={<BarreSupAccueilProprioInvites />} />
 			<Route exact path="/accueil/invites" element={<BarreSupAccueilProprioInvites />} />
+			<Route exact path="/nouveau-canal" element={<BarreSupCanal />} />
 			<Route exact path="/canal" element={<BarreSupCanal />} />
 		</Routes>
 
@@ -60,15 +62,17 @@ ReactDOM.render(
 			<Route exact path="/accueil" element={<ContenuAccueil />} />
 			<Route exact path="/accueil/proprio" element={<ContenuAccueilProprio />} />
 			<Route exact path="/accueil/invites" element={<ContenuAccueilInvites />} />
+			<Route exact path="/nouveau-canal" element={<ContenuCreerCanal />} />
 			<Route exact path="/canal" element={<ContenuCanal />} />
 		</Routes>
 
 		{/* Affichage de la bandeaux latéraux */}
 		<Routes>
-			<Route exact path="/bienvenue" element={<BandeauLatLogin />}/>
+			<Route exact path="/bienvenue" element={<BandeauLatLogin />} />
 			<Route exact path="/accueil" element={<BandeauLatAccueil />} />
 			<Route exact path="/accueil/proprio" element={<BandeauLatAccueil />} />
 			<Route exact path="/accueil/invites" element={<BandeauLatAccueil />} />
+			{/* <Route exact path="/nouveau-canal" element={<BandeauAccueil />} /> */}
 			<Route exact path="/canal" element={<BandeauLatCanal />} />
 		</Routes>
 	</Router>,

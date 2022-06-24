@@ -75,7 +75,7 @@ export default class scriptJS extends React.Component{
             let entete_titre = document.getElementById("entete_titre");
             let entete = document.getElementById("entete");
             let entete_titre_width = entete_titre.offsetWidth;
-            entete_image.src = "img/logout.png";
+            entete_image.src = "http://localhost:3000/img/logout.png";
             entete_titre.style.width = entete_titre_width + 'px';
             entete_titre.innerHTML = `Se déconnecter`;
             this.state.retour_etat = "on";
@@ -93,7 +93,7 @@ export default class scriptJS extends React.Component{
             let entete = document.getElementById("entete");
             let entete_titre_width = entete_titre.offsetWidth;
             entete.onclick = function() {window.location.assign("utilisateur_tous.html")};
-            entete_image.src = "img/retour.png";
+            entete_image.src = "http://localhost:3000/img/retour.png";
             entete_titre.style.width = entete_titre_width + 'px';
             entete_titre.innerHTML = `Retour`;
             this.state.retour_etat = "on";
@@ -108,7 +108,7 @@ export default class scriptJS extends React.Component{
         {
             let entete_image = document.getElementById("entete_image");
             let entete_titre = document.getElementById("entete_titre");
-            entete_image.src = "img/logo.png";
+            entete_image.src = "http://localhost:3000/img/logo.png";
             entete_titre.style.width = "unset";
             entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
             this.state.retour_etat= "off";
@@ -142,7 +142,7 @@ export default class scriptJS extends React.Component{
         {
             let entete_image = document.getElementById("entete_image");
             let entete_titre = document.getElementById("entete_titre");
-            entete_image.src = "img/logo.png";
+            entete_image.src = "http://localhost:3000/img/logo.png";
             entete_titre.style.width = "unset";
             entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
             this.state.retour_etat = "off";
@@ -276,7 +276,6 @@ export default class scriptJS extends React.Component{
     /*========== POSITIONNEMENT EN BAS DE LA CONVERSATION ==========*/
     scroll_bas()
     {
-        alert("scroll jsx")
         let conversation_hauteur = document.getElementById("conversation").clientHeight;
         let corps = document.getElementById("corps")
         console.log("hauteur", conversation_hauteur);

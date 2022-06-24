@@ -2,9 +2,9 @@
 // Projet : Utilitaire Textuel de Communication                                                         //
 // Auteurs : Bastian COSSON, Léo MULLIER, Cédric Martinet                                               //
 //                                                                                                      //
-// Nom du fichier : ContenuLogin.jsx                                                                    //
-// Description : Script JS pour afficher le contenu lorsqu'on est sur la phase de login                 //
-// Date de dernière mise à jour : 23/06/2022                                                            //
+// Nom du fichier : ContenuCreerCanal.jsx                                                               //
+// Description : Script JS pour afficher le contenu lorsqu'on souhaite créer un nouveau canal           //
+// Date de dernière mise à jour : 24/06/2022                                                            //
 // ==================================================================================================== //
 
 
@@ -17,14 +17,15 @@ import DOMPurify from "dompurify";
 
 
 // Classe principale
-export default class ContenuAccueil extends React.Component{
+export default class ContenuCreerCanal extends React.Component{
 	// Constructeur et états
 	constructor(props) 
 	{
 		super(props);
 		this.state = 
 		{
-			lignesTableauTous: '',
+			participants: '',
+			idClient: '',
 			objJS : new scriptJS()
 		};
 	}
@@ -52,6 +53,7 @@ export default class ContenuAccueil extends React.Component{
 			if (c.indexOf(name) == 0) 
 			{
 				var idClientTmp = c.substring(name.length, c.length);
+				this.setState({ idClient: idClientTmp })
 			}
 		}	
 		
@@ -89,12 +91,12 @@ export default class ContenuAccueil extends React.Component{
 
 
 		// Initialisations
-		
+		const parametres = new URLSearchParams(window.location.search);
+		const idCanal = parametres.get("id");
 
-
-		// Requête pour récupérer les infos utilisateurs à afficher		
+		// Requête pour vérifier la légitimité de l'utilisateur à accéder à ce canal et pour récupérer les infos du canal à afficher		
 		var json = JSON.stringify({ idClient: idClientTmp, tokenClient: tokenClientTmp });
-		var res = await axios.post('http://localhost:8080/user/contenu_accueil/canauxtous', json, {
+		var res = await axios.post('http://localhost:8080/user/contenu_creer_canal/liste_utilisateurs', json, {
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -105,21 +107,22 @@ export default class ContenuAccueil extends React.Component{
 		});
 			
 		let data = JSON.parse(localStorage.getItem("dataReq"));
-		if (data == "")
+		if (/*data.l10 != "valide" ||*/ data == "" || data.l0 == "")
 		{
 			// Actions à réaliser pour une réponse négative
-			window.location.assign("/bienvenue")
+			window.location.assign("accueil")
 		} else {
-			this.setState({ lignesTableauTous: data.l0 + data.l1 })
-			//PlisteCanaux = data
-			//console.log("data : " + data)
-			//alert(this.state.lignesTableauTous)
+			this.setState({ participants: data.l0 })
+			//alert(this.state.participants)
 		}
+
 
 		const script = document.createElement("script");
 		script.src = "/js/script.js";
 		script.async = true;
 		document.body.appendChild(script);
+
+		objJS.scroll_bas()
 	}
 
 
@@ -133,46 +136,50 @@ export default class ContenuAccueil extends React.Component{
 	// Fonction de render  
 	render() {
 		// Changement du titre de la page
-		document.title = "UTC - Accueil"
+		document.title = "UTC - Nouveau canal"
+		
 
 		// Portion du code HTML retournée
 		return (
 			<div className="contenulogin">
 				<main id="corps">
 					<nav>
-						<a href="accueil">
-							<p class="titre1">
-								Tous mes canaux</p></a>
-						<a href="accueil/proprio">
-							<p class="titre2">
-								Canaux propriétaires</p></a>
-						<a href="accueil/invites">
-							<p class="titre2">
-								Canaux invités</p></a>
+						<span class="titre1" style={{cursor: 'pointer'}} onClick={() => window.location.href='nouveau-canal'}>Ajouter un utilisateur</span>
 					</nav>
 
 					<article>
-						<p class="texte">
-							Vous vous trouvez actuellement sur votre espace principal de messagerie UTC. Nous vous présentons ci-dessous la liste des canaux auxquels vous participez, que ce soit ceux que vous avez créés ou ceux pour lesquels vous êtes invité. Cliquez simplement sur le canal de votre choix pour y entrer.
-						</p>
-						<table class="table table-striped" id="example" style={{width: 100 + '%'}}>
-						<thead>
-								<tr>
-									<th style={{width: 100 + 'px'}}>n°</th>
-									<th>Description</th>
-									<th style={{width: 200 + 'px'}}>Date de création</th>
-								</tr>
-							</thead>
-							<tbody dangerouslySetInnerHTML={{__html: this.state.lignesTableauTous}}>
+						<span class="texte">
+							Si vous souhaitez insérer un nouveau canal de discusion dans l'application de messagerie UTC, veuillez remplir le formulaire ci-dessous avec les informations souhaitées. Vous serez considéré(e) comme l'utilisateur ou utilisatrice propriétaire du canal. Lorsque vous validerez ensuite cette étape, le système vérifiera automatiquement qu'il n'y a pas de problème dans la saisie des informations, ni de conflit avec la base de conversations déjà existantes.
+						</span>
+						<form class="texte" action="http://localhost:8080/user/nouveau-canal" method="post">
+							<label>Titre de la conversation</label>
+							<br />
+							<input class="login_champ" type="text" name="titre" required/>
+							<br />
+							<br />
+							<label>Description de la conversation</label>
+							<br />
+							<input class="login_champ" type="text-area" name="description" required/>
+							<br />
+							<br />
+							<label>Utilisateurs invités à échanger sur ce groupe<br /><i>Utilisez clic + ctrl pour en sélectionner plusieurs</i></label>
+							<br />
+							<select class="login_champ" id="invites" style={{height: 200 + 'px'}} name="invites" multiple="multiple" required dangerouslySetInnerHTML={{__html: this.state.participants}}>
 								
-							</tbody>
-						</table>
-						<div class="action_div">
-							<img class="action_img" src="/img/ajouter.png" onClick={() => window.location.assign('nouveau-canal')} />
-							<span class="action_span" style={{color: 'white'}} onClick={() => window.location.assign('nouveau-canal')}>Créer une nouvelle conversation</span>
-						</div>
+							</select>
+							<br />
+							<br />
+							<label>Date de fermeture prévue pour le canal</label>
+							<br />
+							<input class="login_champ" type="datetime-local" name="duree" required/>
+							<br />
+							<br />
+							<input type="hidden" name="proprio" value={this.state.idClient} />
+							<input class="login_valider" type="submit" />
+						</form>
 					</article>
 				</main>
+				<script>var objJS = new scriptJS();objJS.scroll_bas()</script>
 			</div>
 		);
 	}

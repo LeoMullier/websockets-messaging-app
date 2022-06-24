@@ -27,6 +27,8 @@ export { default as ContenuAccueil } from "./ContenuAccueil";
 export { default as ContenuAccueilProprio } from "./ContenuAccueilProprio";
 // Page d'accueil invités
 export { default as ContenuAccueilInvites } from "./ContenuAccueilInvites";
+// Page de création d'un nouveau canal
+export { default as ContenuCreerCanal } from "./ContenuCreerCanal";
 // Page de canal
 export { default as ContenuCanal } from "./ContenuCanal";
 
