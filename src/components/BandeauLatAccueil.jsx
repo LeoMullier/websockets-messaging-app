@@ -142,7 +142,7 @@ export default class BandeauLatAccueil extends React.Component{
 							<br />
 							<span class="titre1">{this.state.prenom} {this.state.nom}</span>
 							<br />{this.state.login}
-							<br />Inscrit sur {this.state.nbcanaux} conversations
+							<br />Inscrit(e) sur {this.state.nbcanaux} conversation(s)
 							<br />
 							<br />
 							{parse(this.state.enligne)}

@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : script.js                                                                           //
 // Description : Script JS pour gérer les actions dynamiques sur les pages Web                          //
-// Date de dernière mise à jour : 23/06/2022                                                            //
+// Date de dernière mise à jour : 24/06/2022                                                            //
 // ==================================================================================================== //
 
 
@@ -67,3 +67,53 @@ $(document).ready(function() {
     });
 } );
 
+
+/*========== AFFICHER LE MESSAGE EN LIGNE DANS LE TABLEAU ==========*/
+function afficher_enligne_oui(id){
+    let cellule_droite = document.getElementById("participant_n_"+id);
+    cellule_droite.innerHTML = "est actuellement en ligne";
+}
+
+
+/*========== AFFICHER LE MESSAGE N'EST PAS EN LIGNE DANS LE TABLEAU ==========*/
+function afficher_enligne_non(id){
+    let cellule_droite = document.getElementById("participant_n_"+id);
+    cellule_droite.innerHTML = "est déconnecté(e)";
+}
+
+
+/*========== MASQUER LE MESSAGE EN LIGNE DANS LE TABLEAU ==========*/
+function masquer_enligne(id, chaine){
+    let cellule_droite = document.getElementById("participant_n_"+id);
+    cellule_droite.innerHTML = chaine;
+}
+
+/*========== POSITIONNEMENT EN BAS DE LA CONVERSATION ==========*/
+function scroll_bas()
+{
+    alert("test scroll")
+    let conversation_hauteur = document.getElementById("conversation").clientHeight;
+    let corps = document.getElementById("corps")
+    //console.log("hauteur", hauteur_temp);
+    corps.scrollTop += conversation_hauteur;
+    //console.log("Scroll :", document.getElementById("main").scrollTop);
+
+}
+
+
+/*========== LARGEUR MAX DE LA ZONE DE SAISIE D'UN MESSAGE ==========*/
+var editable
+editable = document.getElementById("message_saisie_bulle")
+// console.log(document.getElementById("msg_bas"))
+$(document).keydown(function(event) {
+    // console.log(editable)
+    if(document.activeElement==editable){
+        if ((event.ctrlKey || event.metaKey) && event.keyCode == 86) {
+            setTimeout(()=>{
+                this.scroll_bas()
+            },10)
+        }
+        this.scroll_bas()
+    }
+
+})

@@ -140,13 +140,13 @@ export default class ContenuAccueil extends React.Component{
 			<div className="contenulogin">
 				<main id="corps">
 					<nav>
-						<a href="utilisateur_tous.html">
+						<a href="accueil">
 							<p class="titre1">
 								Tous mes canaux</p></a>
-						<a href="utilisateur_proprietaires.html">
+						<a href="accueil/proprio">
 							<p class="titre2">
 								Canaux propriétaires</p></a>
-						<a href="utilisateur_invites.html">
+						<a href="accueil/invites">
 							<p class="titre2">
 								Canaux invités</p></a>
 					</nav>

@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : index.js                                                                            //
 // Description : Script JS de déclaration et d'export des différents composants dans le dossier         //
-// Date de dernière mise à jour : 23/06/2022                                                            //
+// Date de dernière mise à jour : 24/06/2022                                                            //
 // ==================================================================================================== //
 
 // ========== Barres supérieures ==========//
@@ -12,6 +12,8 @@
 export { default as BarreSupLogin } from "./BarreSupLogin";
 // Page d'accueil
 export { default as BarreSupAccueil } from "./BarreSupAccueil";
+// Page d'accueil proprio et invités
+export { default as BarreSupAccueilProprioInvites } from "./BarreSupAccueilProprioInvites";
 // Page de conversation
 export { default as BarreSupCanal } from "./BarreSupCanal";
 
@@ -21,6 +23,10 @@ export { default as BarreSupCanal } from "./BarreSupCanal";
 export { default as ContenuLogin } from "./ContenuLogin";
 // Page d'accueil
 export { default as ContenuAccueil } from "./ContenuAccueil";
+// Page d'accueil proprio
+export { default as ContenuAccueilProprio } from "./ContenuAccueilProprio";
+// Page d'accueil invités
+export { default as ContenuAccueilInvites } from "./ContenuAccueilInvites";
 // Page de canal
 export { default as ContenuCanal } from "./ContenuCanal";
 

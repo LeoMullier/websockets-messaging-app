@@ -4,7 +4,7 @@
 //                                                                                                      //
 // Nom du fichier : index.js                                                                            //
 // Description : Script JS central pour afficher les bons composants en fonction des URL                //
-// Date de dernière mise à jour : 23/06/2022                                                            //
+// Date de dernière mise à jour : 24/06/2022                                                            //
 // ==================================================================================================== //
 
 // Importation des ressources
@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
 	BarreSupLogin,
 	BarreSupAccueil,
+	BarreSupAccueilProprioInvites,
 	BarreSupCanal,
 } from "./components";
 
@@ -27,6 +28,8 @@ import {
 import {
 	ContenuLogin,
 	ContenuAccueil,
+	ContenuAccueilProprio,
+	ContenuAccueilInvites,
 	ContenuCanal,
 } from "./components";
 
@@ -46,6 +49,8 @@ ReactDOM.render(
 		<Routes>
 			<Route exact path="/bienvenue" element={<BarreSupLogin />} />
 			<Route exact path="/accueil" element={<BarreSupAccueil />} />
+			<Route exact path="/accueil/proprio" element={<BarreSupAccueilProprioInvites />} />
+			<Route exact path="/accueil/invites" element={<BarreSupAccueilProprioInvites />} />
 			<Route exact path="/canal" element={<BarreSupCanal />} />
 		</Routes>
 
@@ -53,6 +58,8 @@ ReactDOM.render(
 		<Routes>
 			<Route exact path="/bienvenue" element={<ContenuLogin />} />
 			<Route exact path="/accueil" element={<ContenuAccueil />} />
+			<Route exact path="/accueil/proprio" element={<ContenuAccueilProprio />} />
+			<Route exact path="/accueil/invites" element={<ContenuAccueilInvites />} />
 			<Route exact path="/canal" element={<ContenuCanal />} />
 		</Routes>
 
@@ -60,6 +67,8 @@ ReactDOM.render(
 		<Routes>
 			<Route exact path="/bienvenue" element={<BandeauLatLogin />}/>
 			<Route exact path="/accueil" element={<BandeauLatAccueil />} />
+			<Route exact path="/accueil/proprio" element={<BandeauLatAccueil />} />
+			<Route exact path="/accueil/invites" element={<BandeauLatAccueil />} />
 			<Route exact path="/canal" element={<BandeauLatCanal />} />
 		</Routes>
 	</Router>,

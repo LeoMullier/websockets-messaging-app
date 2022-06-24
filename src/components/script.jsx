@@ -276,30 +276,37 @@ export default class scriptJS extends React.Component{
     /*========== POSITIONNEMENT EN BAS DE LA CONVERSATION ==========*/
     scroll_bas()
     {
+        alert("scroll jsx")
         let conversation_hauteur = document.getElementById("conversation").clientHeight;
-        //console.log("hauteur", hauteur_temp);
+        let corps = document.getElementById("corps")
+        console.log("hauteur", conversation_hauteur);
         corps.scrollTop += conversation_hauteur;
-        //console.log("Scroll :", document.getElementById("main").scrollTop);
+        console.log("Scroll :", document.getElementById("main").scrollTop);
 
     }
 
 
     /*========== LARGEUR MAX DE LA ZONE DE SAISIE D'UN MESSAGE ==========*/
-    // var editable
-    // editable = document.getElementById("message_saisie_bulle")
-    // // console.log(document.getElementById("msg_bas"))
-    // $(document).keydown(function(event) {
-    //     // console.log(editable)
-    //     if(document.activeElement==editable){
-    //         if ((event.ctrlKey || event.metaKey) && event.keyCode == 86) {
-    //             setTimeout(()=>{
-    //                 scroll_bas()
-    //             },10)
-    //         }
-    //         scroll_bas()
-    //     }
+    changement_bulle()
+    {
+        alert("change")
+        var editable
+        editable = document.getElementById("message_saisie_bulle")
+        // console.log(document.getElementById("msg_bas"))
+        $(document).keydown(function(event) {
+            // console.log(editable)
+            if(document.activeElement==editable){
+                if ((event.ctrlKey || event.metaKey) && event.keyCode == 86) {
+                    setTimeout(()=>{
+                        this.scroll_bas()
+                    },10)
+                }
+                this.scroll_bas()
+            }
 
-    // })
+        })
+    }
+    
 
 
     /*========== AFFICHER LE MESSAGE EN LIGNE DANS LE TABLEAU ==========*/

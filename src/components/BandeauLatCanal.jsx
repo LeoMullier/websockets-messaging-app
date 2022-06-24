@@ -152,7 +152,7 @@ export default class BandeauLatCanal extends React.Component{
 					<span class="titre2 centrer">
 						Participants
 					</span>
-					<table class="sans_curseur" border="0" cellspacing="0" cellpadding="0" width="100%" dangerouslySetInnerHTML={{__html:this.state.participants}}>
+					<table class="sans_curseur" border="0" cellSpacing="0" cellPadding="0" width="100%" dangerouslySetInnerHTML={{__html:this.state.participants}}>
 						
 					</table>
 				</div>
