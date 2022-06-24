@@ -270,17 +270,30 @@ function activer_boutons_actions()
     let img_activer = document.getElementById("action_img_activer")
     let img_desactiver = document.getElementById("action_img_desactiver")
     let img_supprimer = document.getElementById("action_img_supprimer")
-
+    console.log(img_supprimer)
     let span_activer = document.getElementById("action_span_activer")
     let span_desactiver = document.getElementById("action_span_desactiver")
     let span_supprimer = document.getElementById("action_span_supprimer")
-
+    console.log(span_supprimer)
     img_activer.src = "/img/play.png"
     img_desactiver.src = "/img/pause.png"
     img_supprimer.src = "/img/logout.png"
 
     span_activer.style.color = "white"
     span_desactiver.style.color = "white"
+    span_supprimer.style.color = "white"
+}
+
+
+/*========== ACTIVER LES BOUTONS D'ACTIONS 2 ==========*/
+function activer_boutons_actions_2()
+{
+    let img_supprimer = document.getElementById("action_img_supprimer")
+    console.log(img_supprimer)
+    let span_supprimer = document.getElementById("action_span_supprimer")
+    console.log(span_supprimer)
+
+    img_supprimer.src = "/img/logout.png"
     span_supprimer.style.color = "white"
 }
 
@@ -345,6 +358,25 @@ function supprimer_utilisateur()
     if (utilisateur_selectionne != 0)
     {
         window.location.assign("liste-utilisateurs/supprimer/" + utilisateur_selectionne)
+    }
+}
+
+
+/*========== ACTION SUPPRIMER UN UTILISATEUR ==========*/
+function supprimer_canal()
+{
+    let liste_canaux = document.getElementsByName('selection');
+    let canal_selectionne = 0
+    for (let ligne of liste_canaux)
+    {
+        if (ligne.checked)
+        {
+            canal_selectionne = ligne.value - 1000
+        }
+    }
+    if (canal_selectionne != 0)
+    {
+        window.location.assign("liste-conversations/supprimer/" + canal_selectionne)
     }
 }
 

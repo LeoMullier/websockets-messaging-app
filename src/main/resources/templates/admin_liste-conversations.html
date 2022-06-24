@@ -32,42 +32,42 @@
 	<!-- Corps de la page -->
 	<main id="corps">
 		<nav>
-			<a href="utilisateur_tous.html">
-				<span class="titre1">
-					Liste utilisateurs</span></a>
-			<a href="utilisateur_proprietaires.html">
-				<span class="titre2">
-					Liste conversations</span></a>
+			<span class="titre2" style="cursor: pointer;" th:onclick="|window.location.href='liste-utilisateurs/actualisation'|">Liste utilisateurs</span>
+			<span class="titre1" style="cursor: pointer;" th:onclick="|window.location.href='liste-conversations/actualisation'|">Liste conversations</span>
 		</nav>
 
 		<article>
 			<span class="texte">
-				Afin de vous offrir tous les outils pour administrer la plateforme Utilitaire Textuel pour la Communication, vous la liste de tous les utilisateurs inscrits jusqu'à présent. Il vous est ainsi possible d'ajouter un utilisateur, d'éditer ses propriétés, de le désactiver temporairement ou de le supprimer sa présence sur la messagerie.
+				Afin de vous offrir tous les outils pour administrer la plateforme Utilitaire Textuel pour la Communication, vous la liste de tous les conversations ouvertes jusqu'à présent. Il vous est ainsi possible d'ajouter un nouveau canal, d'éditer ses propriétés, de le désactiver temporairement ou de le supprimer sa présence sur la messagerie.
 			</span>
 			<table id="example" class="table table-striped" style="width:100%">
 				<thead>
 					<tr>
 						<th style="width: 50px;">n°</th>
-						<th>Email</th>
-						<th>Nom</th>
-						<th>Prénom</th>
-						<th>Administrateur</th>
-						<th>En ligne</th>
-						<th> </th>
+						<th>Titre</th>
+						<th>Date de début</th>
+						<th>Date de fin</th>
+						<th>Éphémère ou <br />sauvegardé</th>
+						<th>Id du propriétaire</th>
+						<th></th>
 					</tr>
 				</thead>
-				<tbody th:each="tousLesUtilisateurs : ${ tousLesUtilisateurs }">
-					<tr class="tab_ligne" th:id="|tab_l${ 1000 + tousLesUtilisateursStat.index }|" onMouseEnter="titre_en_vert(1000)" onMouseLeave="titre_en_vert_fin(1000)">
-						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.id }"></td>
-						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.login }"></td>
-						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.nom }"></td>
-						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.prenom }"></td>
-						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.admin }"></td>
-						<td th:text="${ tousLesUtilisateurs.enligne }"></td>
-						<td><input class="tab_radio" type="radio" name="selection" id="selection" th:value="${ 1000 + tousLesUtilisateursStat.index }"></td>
+				<tbody th:each="tousLesCanaux : ${ tousLesCanaux }">
+					<tr class="tab_ligne" th:id="|tab_l${ 1000 + tousLesCanauxStat.index}|" th:onMouseEnter="|titre_en_vert(${ 1000 + tousLesCanauxStat.index })|" th:onMouseLeave="|titre_en_vert_fin(${ 1000 + tousLesCanauxStat.index })|">
+						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesCanaux.id }"></td>
+						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesCanaux.titre }"></td>
+						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesCanaux.date }"></td>
+						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesCanaux.duree }"></td>
+						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesCanaux.sauvegarde }"></td>
+						<td th:text="${ tousLesCanaux.userproprio }"></td>
+						<td><input class="tab_radio" type="radio" name="selection" id="selection" th:value="${ 1000 + tousLesCanaux.id }" onclick="activer_boutons_actions_2()" /></td>
 					</tr>
 				</tbody>
 			</table>
+			<div class="action_div">
+				<img class="action_img" id="action_img_supprimer" src="/img/logout inactif.png" onclick="supprimer_canal()" />
+				<span class="action_span" id="action_span_supprimer" onclick="supprimer_canal()">Supprimer la conversation</span>
+			</div>
 		</article>
 	</main>
 	

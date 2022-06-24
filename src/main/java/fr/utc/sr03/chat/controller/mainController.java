@@ -166,7 +166,7 @@ public class mainController {
 
 
     // ========== MAPPER LES REQUETES PAR GET SUR /admin/accueil/liste-utilisateurs/actualisation ========== //
-    @GetMapping("/accueil/liste-utilisateur/actualisation")
+    @GetMapping("/accueil/liste-utilisateurs/actualisation")
     public RedirectView accueilListeUtilisateursActualisationGET(Model model) {
         // Initialisations
         System.out.println(" ");
@@ -385,11 +385,31 @@ public class mainController {
         // Mise en place des données du modèle
         model.addAttribute("utilisateur", utilisateur);
         model.addAttribute("nbCanauxInscrits", nbCanauxInscrits);
-        model.addAttribute("tousLesUtilisateurs", tousLesCanaux);
+        model.addAttribute("tousLesCanaux", tousLesCanaux);
 
         // Retour de la méthode
         System.out.println("(!) adminLISTE-CONVERSATIONS - " + utilisateur.getLogin() + " - Affichage de la page admin_liste-conversations");
         return "admin_liste-conversations";
+    }
+
+    // ========== MAPPER LES REQUETES PAR GET SUR /admin/accueil/liste-conversations/supprimer ========== //
+    @GetMapping(value="/accueil/liste-conversations/supprimer/{id}")
+    public RedirectView accueilListeConversationsSupprimerGET(@PathVariable int id, Model model) {
+        // Initialisations
+        System.out.println(" ");
+        System.out.println("(!) adminLISTE-CONVERSATIONS-SUPPRIMER - " + utilisateur.getLogin() + " - Nouvelle requête GET sur la page /admin/accueil/liste-conversations/supprimer.");
+
+        // Suppression du canal souhaité
+        Optional<Canal> canaux_a_supprimer = canalRepository.findById(Long.valueOf(id));
+        Canal canal_a_supprimer = canaux_a_supprimer.get();
+
+        // Mise à jour de la base de données
+        canalRepository.delete(canal_a_supprimer);
+        System.out.println("(!) adminLISTE-CONVERSATIONS-SUPPRIMER - " + utilisateur.getLogin() + " - Suppression effective pour l'utilisateur " + canal_a_supprimer.getTitre() + ".");
+
+        // Retour de la méthode
+        System.out.println("(!) adminLISTE-CONVERSATIONS-SUPPRIMER - " + utilisateur.getLogin() + " - Redirection vers /admin/accueil/liste-conversations");
+        return new RedirectView("../../liste-conversations");
     }
 }
 
