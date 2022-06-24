@@ -17,7 +17,7 @@
 <body>
 	<!-- Bandeau supérieur -->
 	<header>
-		<div class="entete" id="entete" onclick="window.location.href='../deconnexion'" onmouseenter="afficher_retour_login()" onmouseleave="masquer_retour_login()">
+		<div class="entete" id="entete" onclick="window.location.href='../deconnexion'" onMouseEnter="afficher_retour_login()" onMouseLeave="masquer_retour_login()">
 			<img class="entete_image" id="entete_image" src="/img/logo.png"/>
 			<p class="entete_titre" id="entete_titre">
 				UTC - Utilitaire Textuel pour la Communication
@@ -57,7 +57,7 @@
 					</tr>
 				</thead>
 				<tbody th:each="tousLesUtilisateurs : ${ tousLesUtilisateurs }">
-					<tr class="tab_ligne" th:id="|tab_l${ 1000 + tousLesUtilisateursStat.index }|" onmouseenter="titre_en_vert(1000)" onmouseleave="titre_en_vert_fin(1000)">
+					<tr class="tab_ligne" th:id="|tab_l${ 1000 + tousLesUtilisateursStat.index }|" onMouseEnter="titre_en_vert(1000)" onMouseLeave="titre_en_vert_fin(1000)">
 						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.id }"></td>
 						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.login }"></td>
 						<td style="border-right: 1px dimgrey solid;" th:text="${ tousLesUtilisateurs.nom }"></td>
