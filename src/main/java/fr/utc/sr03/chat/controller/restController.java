@@ -11,13 +11,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -963,5 +967,141 @@ public class restController
                 }
             }
         }
+    }
+
+
+    // ContenuCreerCanal - Transmettre la liste des utilisateurs qu'il est possible d'inviter
+    @PostMapping(value = "/contenu_creer_canal/liste_utilisateurs", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Donnees ContenuCreerCanal(@RequestBody Token tokenEntrant, HttpServletRequest request) {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Requête POST entrante sur le chemin /contenu_creer_canal/liste_utilisateurs.");
+
+        // Vérification de l'authentification avec ip et token
+        System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient()))) {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - L'utilisateur a bien été correctement authentifié.");
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Préparation de la liste des utilisateurs qu'il est possible d'inviter.");
+
+            List<User> futursInvites = userRepository.findByDesactive(0);
+            int nbInvites = futursInvites.size();
+            int i = 0;
+            String codeHTML = "";
+            while (nbInvites > 0) {
+                if (futursInvites.get(i).getId() != tokenEntrant.getIdClient()) {
+                    codeHTML = codeHTML + "<option value=" + futursInvites.get(i).getId() + ">" + futursInvites.get(i).getPrenom() + " " + futursInvites.get(i).getNom() + "</option>";
+                }
+                nbInvites--;
+                i++;
+            }
+
+            // Envoi des données au React
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Retour de la fonction : packet de données contenant le code HTML des utilisateurs invités possibles.");
+            Donnees donneesRetour = new Donnees(
+                    codeHTML,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "valide"
+            );
+            return donneesRetour;
+        }
+    }
+
+
+    // ContenuCreerCanal - Créer un nouveau canal en base de données
+    @PostMapping(value = "/nouveau-canal"/*, consumes = MediaType.APPLICATION_JSON_VALUE*/)
+    public String NouveauCanal(/*@RequestBody Token tokenEntrant, */HttpServletRequest request) {
+        // Initialisations
+        String ipClient = request.getRemoteAddr();
+        System.out.println(" ");
+        System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Requête POST entrante sur le chemin /contenu_creer_canal/liste_utilisateurs.");
+        String titreTmp = request.getParameter("titre");
+        String descriptionTmp = request.getParameter("description");
+        String[] invitesTmp = request.getParameterValues("invites");
+        String dureeTmp = request.getParameter("duree").split("T")[0] + " " + request.getParameter("duree").split("T")[1] + ":00";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String dateTmp = String.valueOf(now);
+        String proprioTmp = request.getParameter("proprio");
+        //System.out.println("(*) " + invitesTmp[0] + "///"+ invitesTmp[1] + "//" + dureeTmp);
+
+        // Vérification de l'authentification avec ip et token
+        /*
+        System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Vérification de l'authentification de l'utilisateur d'identifiant " + tokenEntrant.getIdClient() + ".");
+        if (!((utilisateursAuthentifies.get(ipClient)).equals(tokenEntrant.getTokenClient()))) {
+            // Echec dans le cas d'un changement d'ip ou d'un mauvais token
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - L'utilisateur n'a pas pu être correctement authentifié.");
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - Retour de la fonction : packet de données vide.");
+            Donnees donneesRetour = new Donnees(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "echec");
+            return donneesRetour;
+        } else {
+            System.out.println("(!) USER-ContenuCreerCanal - " + ipClient + " - L'utilisateur a bien été correctement authentifié.");
+            */
+
+            System.out.println("(!) USER-NouveauCanal - " + ipClient + " - Vérification des données fournies.");
+
+            List<Canal> canalExistant = canalRepository.findByTitre(titreTmp);
+            if (canalExistant.size() != 0) {
+                System.out.println("(!) USER-NouveauCanal - " + ipClient + " - Retour de la fonction : packet de données contenant incompatible.");
+                return ("(!) Une erreur est survenue, veuillez vérifier vos informations saisies et réessayer plus tard.");
+            } else {
+                Canal canalTmp = new Canal();
+                canalTmp.setUserproprio(Long.valueOf(proprioTmp));
+                canalTmp.setTitre(titreTmp);
+                canalTmp.setDescription(descriptionTmp);
+                canalTmp.setDate(dateTmp);
+                canalTmp.setDuree(dureeTmp);
+                canalTmp.setSauvegarde(0);
+                canalRepository.saveAndFlush(canalTmp);
+                System.out.println("(!) USER-NouveauCanal - " + ipClient + " - La canal a bien été ajouté en base de données.");
+
+                List<Canal> nouveauCanal = canalRepository.findByTitre(titreTmp);
+                for (String element : invitesTmp)
+                {
+                    Invites nouvelInvite = new Invites();
+                    nouvelInvite.setIdcanal(nouveauCanal.get(0).getId());
+                    nouvelInvite.setIduser(Long.valueOf(element));
+                    invitesRepository.saveAndFlush(nouvelInvite);
+                    System.out.println("(!) USER-NouveauCanal - " + ipClient + " - L'utilisateur n°" + element + " a bien été associé au nouveau canal.");
+                }
+                return ("<script>window.location.assign('http://localhost:3000/accueil/proprio')</script>");
+            }
+        //}
     }
 }

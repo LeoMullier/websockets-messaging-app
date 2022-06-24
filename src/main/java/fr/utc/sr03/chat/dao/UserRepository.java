@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByLoginAndMdpAndDesactive(String login, String mdp, int desactive);
     List<User> findByIdAndDesactive(Long id, int desactive);
     List<User> findByLogin(String login);
+    List<User> findByDesactive(int desactive);
 }

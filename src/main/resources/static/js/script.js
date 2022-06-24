@@ -79,7 +79,7 @@ function afficher_retour_tmc(){
         let entete = document.getElementById("entete");
         let entete_titre_width = entete_titre.offsetWidth;
         entete.onclick = function() {window.location.assign("utilisateur_tous.html")};
-        entete_image.src = "img/retour.png";
+        entete_image.src = "http://localhost:8080/img/retour.png";
         entete_titre.style.width = entete_titre_width + 'px';
         entete_titre.innerHTML = `Retour`;
         retour_etat = "on";
@@ -93,7 +93,7 @@ function masquer_retour_tmc(){
     {
         let entete_image = document.getElementById("entete_image");
         let entete_titre = document.getElementById("entete_titre");
-        entete_image.src = "img/logo.png";
+        entete_image.src = "http://localhost:8080/img/logo.png";
         entete_titre.style.width = "unset";
         entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
         retour_etat= "off";
@@ -109,7 +109,7 @@ function afficher_retour_login(){
         let entete_titre = document.getElementById("entete_titre");
         let entete = document.getElementById("entete");
         let entete_titre_width = entete_titre.offsetWidth;
-        entete_image.src = "img/logout.png";
+        entete_image.src = "http://localhost:8080/img/logout.png";
         entete_titre.style.width = entete_titre_width + 'px';
         entete_titre.innerHTML = `Se déconnecter`;
         retour_etat = "on";
@@ -123,7 +123,7 @@ function masquer_retour_login(){
     {
         let entete_image = document.getElementById("entete_image");
         let entete_titre = document.getElementById("entete_titre");
-        entete_image.src = "img/logo.png";
+        entete_image.src = "http://localhost:8080/img/logo.png";
         entete_titre.style.width = "unset";
         entete_titre.innerHTML = `UTC - Utilitaire Textuel pour la Communication`;
         retour_etat= "off";
@@ -249,8 +249,8 @@ function afficher_boutons(id)
     // console.log("pos_x:"+pos_x)
     // console.log("pos_y:"+pos_y)
     
-    tab_cellule.insertAdjacentHTML('afterbegin', "<img id='bouton_editer_" +id+ "' src='img/editer.png' onclick='editer_canal(" + id + ")' style='position: absolute; left: "+ (pos_x+largeur-65) +"px; top: "+ pos_y +"px; height: 50px; cursor: pointer;'>")
-    tab_cellule.insertAdjacentHTML('afterbegin', "<img id='bouton_supprimer_" +id+ "' src='img/logout.png' onclick='supprimer_canal(" + id + ")' style='position: absolute; left: "+ (pos_x+largeur) +"px; top: "+ pos_y +"px; height: 50px; cursor: pointer;'>")
+    tab_cellule.insertAdjacentHTML('afterbegin', "<img id='bouton_editer_" +id+ "' src='http://localhost:8080/img/editer.png' onclick='editer_canal(" + id + ")' style='position: absolute; left: "+ (pos_x+largeur-65) +"px; top: "+ pos_y +"px; height: 50px; cursor: pointer;'>")
+    tab_cellule.insertAdjacentHTML('afterbegin', "<img id='bouton_supprimer_" +id+ "' src='http://localhost:8080/img/logout.png' onclick='supprimer_canal(" + id + ")' style='position: absolute; left: "+ (pos_x+largeur) +"px; top: "+ pos_y +"px; height: 50px; cursor: pointer;'>")
 }
 
 
@@ -293,7 +293,7 @@ function activer_boutons_actions_2()
     let span_supprimer = document.getElementById("action_span_supprimer")
     console.log(span_supprimer)
 
-    img_supprimer.src = "/img/logout.png"
+    img_supprimer.src = "http://localhost:8080/img/logout.png"
     span_supprimer.style.color = "white"
 }
 

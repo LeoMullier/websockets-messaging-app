@@ -15,4 +15,5 @@ public interface CanalRepository extends JpaRepository<Canal, Long> {
     // ========== METHODES DE RECHERCHES DANS LA BDD ========== //
     List<Canal> findByUserproprio(long userproprio);
     List<Canal> findByIdAndUserproprio(long id, long userproprio);
+    List<Canal> findByTitre(String titre);
 }
